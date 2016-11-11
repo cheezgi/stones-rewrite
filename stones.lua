@@ -63,6 +63,7 @@ function parse(tokens) -- {{{
     local statements = {}
     local k = 1
     local i = 1
+    --for k,v in ipairs(tokens) do print(ml.tstring(v)) end
 
     -- oh boy - loop through list of tokens
     while i < #tokens do
@@ -107,6 +108,8 @@ function parse(tokens) -- {{{
                 -- or here
                 i = i + 1
             end
+        else
+            error("Expected color after statement #" .. tostring(k))
         end
     end
 
@@ -253,11 +256,11 @@ function eval(proc)
         end
 
         if args.debug then
-            print(k .. ":", stmt.color, stmt.direction, stmt.number, frames[#frames], #frames)
+            print(k .. ":", stmt.color, stmt.direction, stmt.number, frames.last, #frames)
         end
         if args.stack then
             print(k, "stack:")
-            for k,v in ipairs(stack) do print(k, ml.tstring(v)) end
+            for k,v in ipairs(stack:get()) do print(ml.tstring(v)) end
         end
         if args.field then
             print(k, "field:")
