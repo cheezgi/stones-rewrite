@@ -1,4 +1,3 @@
-
 Stack = {}
 Stack.__index = Stack
 
@@ -29,3 +28,4 @@ end
 function Stack.last(self)
     return self.table[#self.table]
 end
+
