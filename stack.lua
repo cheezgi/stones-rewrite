@@ -10,22 +10,24 @@ setmetatable(Stack, {
 function Stack.new()
     local self = setmetatable({}, Stack)
     self.table = {}
+    self.last = nil
     return self
 end
 
-function Stack.get(self)
+function Stack:get()
     return self.table
 end
 
-function Stack.push(self, val)
+function Stack:push(val)
     table.insert(self.table, val)
+    self.last = self.table[#self.table]
 end
 
-function Stack.pop(self)
+function Stack:pop()
     return table.remove(self.table)
 end
 
-function Stack.last(self)
+function Stack:last()
     return self.table[#self.table]
 end
 
