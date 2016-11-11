@@ -13,5 +13,9 @@ into writing an interpreter.
 
 see [this](https://github.com/cheezgi/stones)
 
+TODO:
+* [X] Set up skeleton
+* [ ] Everything else
+
 <!-- pls no one look at the history of this page >.< -->
 
