@@ -11,6 +11,49 @@ local stoneColors = syntax.stoneColors
 local directions = syntax.directions
 local numbers = syntax.numbers
 
+function lex(lines)
+    local rawtokens = {}
+    local tokens = {}
+
+    for line in lines do
+        for word in line:gmatch("([^%s]+)") do
+            table.insert(rawtokens, word)
+        end
+    end
+
+    for k, token in ipairs(rawtokens) do
+        if token == "red" then
+            table.insert(tokens, stoneColors.red)
+        elseif token == "orange" then
+            table.insert(tokens, stoneColors.orange)
+        elseif token == "yellow" then
+            table.insert(tokens, stoneColors.yellow)
+        elseif token == "green" then
+            table.insert(tokens, stoneColors.green)
+        elseif token == "blue" then
+            table.insert(tokens, stoneColors.blue)
+        elseif token == "purple" then
+            table.insert(tokens, stoneColors.purple)
+        elseif token == "up" then
+            table.insert(tokens, directions.up)
+        elseif token == "down" then
+            table.insert(tokens, directions.down)
+        elseif token == "left" then
+            table.insert(tokens, directions.left)
+        elseif token == "right" then
+            table.insert(tokens, directions.right)
+        elseif token == "1" then
+            table.insert(tokens, numbers.one)
+        elseif token == "2" then
+            table.insert(tokens, numbers.two)
+        elseif token == "3" then
+            table.insert(tokens, numbers.three)
+        end
+    end
+
+    return tokens
+end
+
 function parse(tokens)
     local statements = {}
     local i = 1
@@ -58,53 +101,6 @@ function parse(tokens)
             end
         end
     end
-
-    for k,v in ipairs(statements) do
-        print(microlight.tstring(v))
-    end
-end
-
-function lex(lines)
-    local rawtokens = {}
-    local tokens = {}
-
-    for line in lines do
-        for word in line:gmatch("([^%s]+)") do
-            table.insert(rawtokens, word)
-        end
-    end
-
-    for k, token in ipairs(rawtokens) do
-        if token == "red" then
-            table.insert(tokens, stoneColors.red)
-        elseif token == "orange" then
-            table.insert(tokens, stoneColors.orange)
-        elseif token == "yellow" then
-            table.insert(tokens, stoneColors.yellow)
-        elseif token == "green" then
-            table.insert(tokens, stoneColors.green)
-        elseif token == "blue" then
-            table.insert(tokens, stoneColors.blue)
-        elseif token == "purple" then
-            table.insert(tokens, stoneColors.purple)
-        elseif token == "up" then
-            table.insert(tokens, directions.up)
-        elseif token == "down" then
-            table.insert(tokens, directions.down)
-        elseif token == "left" then
-            table.insert(tokens, directions.left)
-        elseif token == "right" then
-            table.insert(tokens, directions.right)
-        elseif token == "1" then
-            table.insert(tokens, numbers.one)
-        elseif token == "2" then
-            table.insert(tokens, numbers.two)
-        elseif token == "3" then
-            table.insert(tokens, numbers.three)
-        end
-    end
-
-    return tokens
 end
 
 function main()
@@ -131,8 +127,8 @@ function main()
     local lines = file:lines()
 
     local tokens = lex(lines)
-    --print(microlight.tstring(tokens))
     local proc = parse(tokens)
+    eval(proc)
 end
 
 main()
