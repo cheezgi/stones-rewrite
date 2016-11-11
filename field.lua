@@ -1,5 +1,5 @@
 
-local _sc = require("stone_colors")
+local _sc = require("syntax").stoneColors
 
 local _f = {{},}
 

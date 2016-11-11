@@ -2,19 +2,24 @@
 
 return {
     stoneColors = {
-        red = 1,
-        orange = 2,
-        yellow = 3,
-        green = 4,
-        blue = 5,
-        purple = 6,
-        invis = 7
+        red = "red",
+        orange = "orange",
+        yellow = "yellow",
+        green = "green",
+        blue = "blue",
+        purple = "purple",
+        invis = "invis"
     },
     directions = {
-        up = 1,
-        down = 2,
-        left = 3,
-        right = 4,
-        none = 5
+        up = "up",
+        down = "down",
+        left = "left",
+        right = "right",
+        none = "none"
+    },
+    numbers = {
+        one = "one",
+        two = "two",
+        three = "three"
     }
 }
