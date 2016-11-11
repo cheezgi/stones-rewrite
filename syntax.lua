@@ -7,9 +7,10 @@ setmetatable(Color, {
         return cls.new(...)
     end
 })
-function Color.new(color)
+function Color.new(color, pname)
     local self = setmetatable({}, Color)
     self.color = color
+    self.pname = pname
     self.is_color = true
     return self
 end
@@ -44,13 +45,13 @@ end
 
 return {
     stoneColors = {
-        red = Color.new("red"),
-        orange = Color.new("orange"),
-        yellow = Color.new("yellow"),
-        green = Color.new("green"),
-        blue = Color.new("blue"),
-        purple = Color.new("purple"),
-        invis = Color.new("invis"),
+        red = Color.new("red",       "red--- "),
+        orange = Color.new("orange", "orange "),
+        yellow = Color.new("yellow", "yellow "),
+        green = Color.new("green",   "green- "),
+        blue = Color.new("blue",     "blue-- "),
+        purple = Color.new("purple", "purple "),
+        invis = Color.new("invis",   "------ "),
     },
     directions = {
         up = Direction.new("up"),

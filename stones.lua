@@ -5,9 +5,12 @@ local microlight = require("libs.ml")
 -- internal libraries
 require("stmt")
 require("stack")
+
+-- global variables
 local syntax = require("syntax")
 local field = require("field")
 local frames = Stack.new()
+local stack = Stack.new()
 
 local stoneColors = syntax.stoneColors
 local directions = syntax.directions
@@ -17,12 +20,14 @@ function lex(lines)
     local rawtokens = {}
     local tokens = {}
 
+    -- split lines into whitespace
     for line in lines do
         for word in line:gmatch("([^%s]+)") do
             table.insert(rawtokens, word)
         end
     end
 
+    -- convert raw tokens to real tokens
     for k, token in ipairs(rawtokens) do
         if token == "red" then
             table.insert(tokens, stoneColors.red)
@@ -177,36 +182,61 @@ function eval(proc)
             elseif stmt.direction == "right" then    -- end
             end
         end
+
+        if args.debug then
+            print(k .. ":", stmt.color, stmt.direction, stmt.number, frames[#frames], #frames)
+        end
+        if args.stack then
+            print(k, "stack:")
+            for k,v in ipairs(stack) do print(k, microlight.tstring(v)) end
+        end
+        if args.field then
+            print(k, "field:")
+            for y = 1, field.height do
+                for x = 1, field.width do
+                    io.write(field[y][x].pname)
+                end
+                print("")
+            end
+        end
     end
 end
 
 function main()
+    -- init arg parser
     local argparse = require("libs.argparse")
             ("stones", "Esoteric programming language")
 
-    -- get command line arguments
+    -- set up parser
     argparse:argument("file", "File to be interpreted")
     argparse:flag("-f --field", "Print field")
-    argparse:flag("-r --frames", "Print frames")
     argparse:flag("-d --debug", "Print debugging")
     argparse:flag("-s --stack", "Print stack")
     argparse:flag("-v --version", "Print version")
 
-    local args = argparse:parse()
+    -- get cmd line args
+    args = argparse:parse()
 
+    -- open file
     local file = io.open(args.file)
-
     if file == nil then
         print("File not found: " .. args.file)
         os.exit(1)
     end
 
+    -- split into lines to be lexed
     local lines = file:lines()
 
+    -- lex file into tokens
     local tokens = lex(lines)
+
+    -- parse tokens into statements
     local proc = parse(tokens)
-    --eval(proc)
-    for k,v in ipairs(proc) do print(microlight.tstring(v)) end
+
+    -- evaluate statements
+    eval(proc)
+
+    --for k,v in ipairs(proc) do print(microlight.tstring(v)) end
 end
 
 main()
