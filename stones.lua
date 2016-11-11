@@ -5,13 +5,63 @@ local microlight = require("libs.ml")
 -- internal libraries
 local syntax = require("syntax")
 local field = require("field")
+local frames = require("stack").new()
 
 local stoneColors = syntax.stoneColors
 local directions = syntax.directions
 local numbers = syntax.numbers
 
 function parse(tokens)
-    return ""
+    local statements = {}
+    local i = 1
+
+    -- oh boy - loop through list of tokens
+    while i < #tokens do
+      -- check if color
+      if tokens[i].is_color then
+        -- nil check
+        if tokens[i + 1] then
+          -- check if next is direction
+          if tokens[i + 1].is_direction then
+            -- nil check
+            if tokens[i + 2] then
+              -- check if next is number
+              if tokens[i + 2].is_number then
+                -- check if orange/red - only colors that take magnitudes
+                if tokens[i] == stoneColors.red or tokens[i] == stoneColors.orange then
+                  -- add statement
+                  table.insert(statements, {tokens[i], tokens[i + 1], tokens[i + 2]})
+                  i = i + 3
+                else
+                  error("Did not expect number for non orange/red")
+                end
+              else
+                -- if not a number, make sure it didn't need one
+                if tokens[i] == stoneColors.red or tokens[i] == stoneColors.orange then
+                  error("Expected number for orange/red")
+                else
+                  -- add statement
+                  table.insert(statements, {tokens[i], tokens[i + 1]})
+                  i = i + 2
+                end
+              end
+            else
+              -- not really sure what to do here
+              i = i + 1
+            end
+          else
+            error("Expected direction after color")
+          end
+        else
+          -- or here
+          i = i + 1
+        end
+      end
+    end
+
+    for k,v in ipairs(statements) do
+        print(microlight.tstring(v))
+    end
 end
 
 function lex(lines)
@@ -81,7 +131,7 @@ function main()
     local lines = file:lines()
 
     local tokens = lex(lines)
-    print(microlight.tstring(tokens))
+    --print(microlight.tstring(tokens))
     local proc = parse(tokens)
 end
 
