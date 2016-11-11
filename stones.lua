@@ -8,9 +8,6 @@ require("stack")
 
 -- global variables
 local syntax = require("syntax")
-local field = require("field")
-local frames = Stack.new()
-local stack = Stack.new()
 
 local stoneColors = syntax.stoneColors
 local directions = syntax.directions
@@ -115,71 +112,148 @@ function parse(tokens)
     return statements
 end
 
+function reverse(tbl)
+    for i = 1, math.floor(#tbl / 2) do
+        tbl[i], tbl[#tbl - i - 1] = tbl[#tbl - i + 1], tbl[i]
+    end
+end
+
 function eval(proc)
+    local frames = Stack.new()
+    local cf = #frames
+    local stack = Stack.new()
+    local field = require("field")
+
+    frames:push(true)
+
     for k, stmt in ipairs(proc) do
         if stmt.color == "red" then
-            if stmt.direction == "up" then
-                if stmt.number == 1 then             -- 0
-                elseif stmt.number == 2 then         -- 4
-                else                                 -- 8
-                end
-            elseif stmt.direction == "down" then
-                if stmt.number == 1 then             -- 1
-                elseif stmt.number == 2 then         -- 5
-                else                                 -- 9
-                end
-            elseif stmt.direction == "left" then
-                if stmt.number == 1 then             -- 2
-                elseif stmt.number == 2 then         -- 6
-                else                                 -- true
-                end
-            elseif stmt.direction == "right" then
-                if stmt.number == 1 then             -- 3
-                elseif stmt.number == 2 then         -- 7
-                else                                 -- false
+            if frames.last then
+                if stmt.direction == "up" then
+                    if stmt.number == 1 then                             -- 0
+                        stack:push(0)
+                    elseif stmt.number == 2 then                         -- 4
+                        stack:push(4)
+                    else                                                 -- 8
+                        stack:push(8)
+                    end
+                elseif stmt.direction == "down" then
+                    if stmt.number == 1 then                             -- 1
+                        stack:push(1)
+                    elseif stmt.number == 2 then                         -- 5
+                        stack:push(5)
+                    else                                                 -- 9
+                        stack:push(9)
+                    end
+                elseif stmt.direction == "left" then
+                    if stmt.number == 1 then                             -- 2
+                        stack:push(2)
+                    elseif stmt.number == 2 then                         -- 6
+                        stack:push(6)
+                    else                                                 -- true
+                        stack:push(true)
+                    end
+                elseif stmt.direction == "right" then
+                    if stmt.number == 1 then                             -- 3
+                        stack:push(3)
+                    elseif stmt.number == 2 then                         -- 7
+                        stack:push(7)
+                    else                                                 -- false
+                        stack:push(false)
+                    end
                 end
             end
         elseif stmt.color == "orange" then
-            if stmt.direction == "up" then
-                if stmt.number == 1 then             -- [
-                elseif stmt.number == 2 then         -- ==
-                end
-            elseif stmt.direction == "down" then
-                if stmt.number == 1 then             -- ]
-                elseif stmt.number == 2 then         -- <
-                end
-            elseif stmt.direction == "left" then
-                if stmt.number == 1 then             -- ,
-                elseif stmt.number == 2 then         -- >
-                end
-            elseif stmt.direction == "right" then
-                if stmt.number == 1 then             -- nth
-                elseif stmt.number == 2 then         -- nothing yet: gotos?
+            if frames.last then
+                if stmt.direction == "up" then
+                    if stmt.number == 1 then                             -- [
+                    elseif stmt.number == 2 then                         -- ==
+                    end
+                elseif stmt.direction == "down" then
+                    if stmt.number == 1 then                             -- ]
+                    elseif stmt.number == 2 then                         -- <
+                    end
+                elseif stmt.direction == "left" then
+                    if stmt.number == 1 then                             -- ,
+                    elseif stmt.number == 2 then                         -- >
+                    end
+                elseif stmt.direction == "right" then
+                    if stmt.number == 1 then                             -- nth
+                    elseif stmt.number == 2 then                         -- nothing yet: gotos?
+                    end
                 end
             end
         elseif stmt.color == "yellow" then
-            if stmt.direction == "up" then           -- *
-            elseif stmt.direction == "down" then     -- +
-            elseif stmt.direction == "left" then     -- -
-            elseif stmt.direction == "right" then    -- /
+            if frames.last then
+                local lhs = stack:pop()
+                local rhs = stack:pop()
+                if type(lhs) ~= "number" or type(rhs) ~= "number" then
+                    print("Cannot perform arithmetic on non-numbers")
+                    os.exit(1)
+                end
+                if stmt.direction == "up" then                           -- *
+                    stack:push(rhs * lhs)
+                elseif stmt.direction == "down" then                     -- +
+                    stack:push(rhs + lhs)
+                elseif stmt.direction == "left" then                     -- -
+                    stack:push(rhs - lhs)
+                elseif stmt.direction == "right" then                    -- /
+                    stack:push(rhs / lhs)
+                end
             end
         elseif stmt.color == "green" then
-            if stmt.direction == "up" then           -- roll
-            elseif stmt.direction == "down" then     -- dup
-            elseif stmt.direction == "left" then     -- drop
-            elseif stmt.direction == "right" then    -- not
+            if frames.last then
+                if stmt.direction == "up" then                           -- roll
+                    local depth = stack:pop()
+                    local toroll = {}
+                    if depth > #stack:get() then
+                        print("Stack underflow")
+                        os.exit(1)
+                    end
+                    for i = 1, depth do
+                        table.insert(toroll, stack:pop())
+                    end
+                    reverse(toroll)
+                    local top = table.remove(toroll)
+                    table.insert(toroll, 1, top)
+                    for k, v in ipairs(toroll) do
+                        stack:push(v)
+                    end
+                elseif stmt.direction == "down" then                     -- dup
+                    local dup = stack:pop()
+                    stack:push(dup)
+                    stack:push(dup)
+                elseif stmt.direction == "left" then                     -- drop
+                    stack:pop()
+                elseif stmt.direction == "right" then                    -- not
+                    stack:push(not stack:pop()) -- boolean check?
+                end
             end
         elseif stmt.color == "blue" then
-            if stmt.direction == "up" then           -- print
-            elseif stmt.direction == "down" then     -- input
-            elseif stmt.direction == "left" then     -- printc
-            elseif stmt.direction == "right" then    -- quine
+            if frames.last then
+                if stmt.direction == "up" then                           -- print
+                    io.write(tostring(stack:pop()))
+                elseif stmt.direction == "down" then                     -- input
+                    stack:push(tonumber(io.read()))
+                elseif stmt.direction == "left" then                     -- printc
+                    io.write(string.char(stack:pop()))
+                elseif stmt.direction == "right" then                    -- quine
+                    io.write("blue right")
+                    os.exit(0)
+                end
             end
         elseif stmt.color == "purple" then
-            if stmt.direction == "up" then           -- if
-            elseif stmt.direction == "down" then     -- else
-            elseif stmt.direction == "left" then     -- while
-            elseif stmt.direction == "right" then    -- end
+            if stmt.direction == "up" then                               -- if
+                if stack:pop() then
+                    frames:push(true)
+                else
+                    frames:push(false)
+                end
+            elseif stmt.direction == "down" then                         -- else
+                frames.last = not frames.last
+            elseif stmt.direction == "left" then                         -- while
+            elseif stmt.direction == "right" then                        -- end
+                frames:pop()
             end
         end
 
