@@ -3,9 +3,11 @@
 local microlight = require("libs.ml")
 
 -- internal libraries
+require("stmt")
+require("stack")
 local syntax = require("syntax")
 local field = require("field")
-local frames = require("stack").new()
+local frames = Stack.new()
 
 local stoneColors = syntax.stoneColors
 local directions = syntax.directions
@@ -56,6 +58,7 @@ end
 
 function parse(tokens)
     local statements = {}
+    local k = 1
     local i = 1
 
     -- oh boy - loop through list of tokens
@@ -73,19 +76,21 @@ function parse(tokens)
                             -- check if orange/red - only colors that take magnitudes
                             if tokens[i] == stoneColors.red or tokens[i] == stoneColors.orange then
                                 -- add statement
-                                table.insert(statements, {tokens[i], tokens[i + 1], tokens[i + 2]})
+                                table.insert(statements, Statement.new(tokens[i], tokens[i + 1], tokens[i + 2], k))
                                 i = i + 3
+                                k = k + 1
                             else
-                                error("Did not expect number for non orange/red")
+                                error("Did not expect number for non orange/red in statement #" .. tostring(k))
                             end
                         else
                             -- if not a number, make sure it didn't need one
                             if tokens[i] == stoneColors.red or tokens[i] == stoneColors.orange then
-                                error("Expected number for orange/red")
+                                error("Expected number for orange/red in statement #" .. tostring(k))
                             else
                                 -- add statement
-                                table.insert(statements, {tokens[i], tokens[i + 1]})
+                                table.insert(statements, Statement.new(tokens[i], tokens[i + 1], nil, k))
                                 i = i + 2
+                                k = k + 1
                             end
                         end
                     else
@@ -93,11 +98,83 @@ function parse(tokens)
                         i = i + 1
                     end
                 else
-                    error("Expected direction after color")
+                    error("Expected direction after color in statement #" .. tostring(k))
                 end
             else
                 -- or here
                 i = i + 1
+            end
+        end
+    end
+
+    return statements
+end
+
+function eval(proc)
+    for k, stmt in ipairs(proc) do
+        if stmt.color == "red" then
+            if stmt.direction == "up" then
+                if stmt.number == 1 then             -- 0
+                elseif stmt.number == 2 then         -- 4
+                else                                 -- 8
+                end
+            elseif stmt.direction == "down" then
+                if stmt.number == 1 then             -- 1
+                elseif stmt.number == 2 then         -- 5
+                else                                 -- 9
+                end
+            elseif stmt.direction == "left" then
+                if stmt.number == 1 then             -- 2
+                elseif stmt.number == 2 then         -- 6
+                else                                 -- true
+                end
+            elseif stmt.direction == "right" then
+                if stmt.number == 1 then             -- 3
+                elseif stmt.number == 2 then         -- 7
+                else                                 -- false
+                end
+            end
+        elseif stmt.color == "orange" then
+            if stmt.direction == "up" then
+                if stmt.number == 1 then             -- [
+                elseif stmt.number == 2 then         -- ==
+                end
+            elseif stmt.direction == "down" then
+                if stmt.number == 1 then             -- ]
+                elseif stmt.number == 2 then         -- <
+                end
+            elseif stmt.direction == "left" then
+                if stmt.number == 1 then             -- ,
+                elseif stmt.number == 2 then         -- >
+                end
+            elseif stmt.direction == "right" then
+                if stmt.number == 1 then             -- nth
+                elseif stmt.number == 2 then         -- nothing yet: gotos?
+                end
+            end
+        elseif stmt.color == "yellow" then
+            if stmt.direction == "up" then           -- *
+            elseif stmt.direction == "down" then     -- +
+            elseif stmt.direction == "left" then     -- -
+            elseif stmt.direction == "right" then    -- /
+            end
+        elseif stmt.color == "green" then
+            if stmt.direction == "up" then           -- roll
+            elseif stmt.direction == "down" then     -- dup
+            elseif stmt.direction == "left" then     -- drop
+            elseif stmt.direction == "right" then    -- not
+            end
+        elseif stmt.color == "blue" then
+            if stmt.direction == "up" then           -- print
+            elseif stmt.direction == "down" then     -- input
+            elseif stmt.direction == "left" then     -- printc
+            elseif stmt.direction == "right" then    -- quine
+            end
+        elseif stmt.color == "purple" then
+            if stmt.direction == "up" then           -- if
+            elseif stmt.direction == "down" then     -- else
+            elseif stmt.direction == "left" then     -- while
+            elseif stmt.direction == "right" then    -- end
             end
         end
     end
@@ -128,7 +205,8 @@ function main()
 
     local tokens = lex(lines)
     local proc = parse(tokens)
-    eval(proc)
+    --eval(proc)
+    for k,v in ipairs(proc) do print(microlight.tstring(v)) end
 end
 
 main()
