@@ -1,6 +1,7 @@
+#!/usr/bin/env lua
 
 -- external libraries
-local microlight = require("libs.ml")
+local ml = require("libs.ml")
 
 -- internal libraries
 require("stmt")
@@ -13,7 +14,7 @@ local stoneColors = syntax.stoneColors
 local directions = syntax.directions
 local numbers = syntax.numbers
 
-function lex(lines)
+function lex(lines) -- {{{
     local rawtokens = {}
     local tokens = {}
 
@@ -56,9 +57,9 @@ function lex(lines)
     end
 
     return tokens
-end
+end -- }}}
 
-function parse(tokens)
+function parse(tokens) -- {{{
     local statements = {}
     local k = 1
     local i = 1
@@ -110,22 +111,16 @@ function parse(tokens)
     end
 
     return statements
-end
+end -- }}}
 
-function reverse(tbl)
-    for i = 1, math.floor(#tbl / 2) do
-        tbl[i], tbl[#tbl - i - 1] = tbl[#tbl - i + 1], tbl[i]
-    end
-end
+-- function eval(proc) {{{
+local frames = Stack.new()
+local cf = #frames
+local stack = Stack.new()
+local field = require("field")
+frames:push(true)
 
 function eval(proc)
-    local frames = Stack.new()
-    local cf = #frames
-    local stack = Stack.new()
-    local field = require("field")
-
-    frames:push(true)
-
     for k, stmt in ipairs(proc) do
         if stmt.color == "red" then
             if frames.last then
@@ -262,7 +257,7 @@ function eval(proc)
         end
         if args.stack then
             print(k, "stack:")
-            for k,v in ipairs(stack) do print(k, microlight.tstring(v)) end
+            for k,v in ipairs(stack) do print(k, ml.tstring(v)) end
         end
         if args.field then
             print(k, "field:")
@@ -274,7 +269,109 @@ function eval(proc)
             end
         end
     end
-end
+end -- }}}
+
+function move(stone, dir) -- {{{
+    -- loop through rows
+    for y, row in ipairs(field) do
+        -- loop through columns
+        for x, item in ipairs(row) do
+            -- check for stone
+            if field[y][x] == stone then
+                -- check direction
+                if dir == "up" then
+                    -- check for wrapping around
+                    if y ~= 1 then
+                        -- check if stone is blocking
+                        -- TODO: check weight of stone
+                        if field[y - 1] ~= stoneColors.invis then
+                            -- move it out of the way
+                            local tm = field[y - 1][x]
+                            move(tm, dir)
+                            eval(Statement.new(tm, directions.up, numbers.one))
+                        end
+                        field[y][x] = stoneColors.invis
+                        field[y - 1][x] = stone
+                    else
+                        -- wrap stone around
+                        if field[field.height][x] ~= stoneColors.invis then
+                            local tm = field[field.height][x]
+                            move(tm, dir)
+                            eval(Statement.new(tm, directions.up, numbers.one))
+                        end
+                        field[y][x] = stoneColors.invis
+                        field[field.height][x] = stone
+                    end
+                    goto done
+                elseif dir == "down" then
+                    if y ~= field.height then
+                        if field[y + 1][x] ~= stoneColors.invis then
+                            local tm = field[y + 1][x]
+                            move(tm, dir)
+                            eval(Statement.new(tm, directions.down, numbers.one))
+                        end
+                        field[y][x] = stoneColors.invis
+                        field[y + 1][x] = stone
+                    else
+                        if field[1][x] ~= stoneColors.invis then
+                            local tm = field[1][x]
+                            move(tm, dir)
+                            eval(Statement.new(tm, directions.down, numbers.one))
+                        end
+                        field[y][x] = stoneColors.invis
+                        field[1][x] = stone
+                    end
+                    goto done
+                elseif dir == "left" then
+                    if x ~= 1 then
+                        if field[y][x - 1] ~= stoneColors.invis then
+                            local tm = field[y][x - 1]
+                            move(tm, dir)
+                            eval(Statement.new(tm, directions.left, numbers.one))
+                        end
+                        field[y][x] = stoneColors.invis
+                        field[y][x - 1] = stone
+                    else
+                        if field[y][field.width] ~= stoneColors.invis then
+                            local tm = field[y][field.width]
+                            move(tm, dir)
+                            eval(Statement.new(tm, directions.left, numbers.one))
+                        end
+                        field[y][x] = stoneColors.invis
+                        field[y][field.width] = stone
+                    end
+                    goto done
+                elseif dir == "right" then
+                    if x ~= field.width then
+                        if field[y][x + 1] ~= stoneColors.invis then
+                            local tm = field[y][x + 1]
+                            move(tm, dir)
+                            eval(Statement.new(tm, directions.right, numbers.one))
+                        end
+                        field[y][x] = stoneColors.invis
+                        field[y][x + 1] = stone
+                    else
+                        if field[y][1] ~= stoneColors.invis then
+                            local tm = field[y][1]
+                            move(tm, dir)
+                            eval(Statement.new(tm, directions.right, numbers.one))
+                        end
+                        field[y][x] = stoneColors.invis
+                        field[y][1] = stone
+                    end
+                    goto done
+                end
+            end
+        end
+    end
+    ::done::
+end -- }}}
+
+function reverse(tbl) -- {{{
+    for i = 1, math.floor(#tbl / 2) do
+        tbl[i], tbl[#tbl - i - 1] = tbl[#tbl - i + 1], tbl[i]
+    end
+end -- }}}
 
 function main()
     -- init arg parser
@@ -310,7 +407,7 @@ function main()
     -- evaluate statements
     eval(proc)
 
-    --for k,v in ipairs(proc) do print(microlight.tstring(v)) end
+    --for k,v in ipairs(proc) do print(ml.tstring(v)) end
 end
 
 main()
