@@ -126,6 +126,10 @@ local cf = #frames
 local stack = Stack.new()
 local field = require("field")
 local nmove = 0
+stack:push(1)
+stack:push(1)
+stack:push(1)
+stack:push(1)
 
 function eval(proc)
     for k, stmt in ipairs(proc) do
@@ -181,19 +185,31 @@ function eval(proc)
             if frames[cf] then
                 if stmt.direction == "up" then
                     if stmt.number == 1 then                                                          -- [
+                        move(stoneColors.orange, stmt.direction)
                     elseif stmt.number == 2 then                                                      -- ==
+                        move(stoneColors.orange, stmt.direction)
+                        move(stoneColors.orange, stmt.direction)
                     end
                 elseif stmt.direction == "down" then
                     if stmt.number == 1 then                                                          -- ]
+                        move(stoneColors.orange, stmt.direction)
                     elseif stmt.number == 2 then                                                      -- <
+                        move(stoneColors.orange, stmt.direction)
+                        move(stoneColors.orange, stmt.direction)
                     end
                 elseif stmt.direction == "left" then
                     if stmt.number == 1 then                                                          -- ,
+                        move(stoneColors.orange, stmt.direction)
                     elseif stmt.number == 2 then                                                      -- >
+                        move(stoneColors.orange, stmt.direction)
+                        move(stoneColors.orange, stmt.direction)
                     end
                 elseif stmt.direction == "right" then
                     if stmt.number == 1 then                                                          -- nth
+                        move(stoneColors.orange, stmt.direction)
                     elseif stmt.number == 2 then                                                      -- nothing yet: gotos?
+                        move(stoneColors.orange, stmt.direction)
+                        move(stoneColors.orange, stmt.direction)
                     end
                 end
             end
@@ -275,6 +291,7 @@ function eval(proc)
                 frames[cf] = not frames[cf]
                 move(stoneColors.purple, stmt.direction)
             elseif stmt.direction == "left" then                                                      -- while
+                move(stoneColors.purple, stmt.direction)
             elseif stmt.direction == "right" then                                                     -- end
                 table.remove(frames)
                 cf = cf - 1
@@ -401,10 +418,10 @@ function move(stone, dir) -- {{{
                         if field[y][x - 1].weight <= stone.weight then
                             if field[y][x - 1] ~= stoneColors.invis then
                                 local tm = field[y][x - 1]
-                                move(tm, dir)
                                 nmove = nmove + 1
                                 eval({Statement.new(tm, directions.left, numbers.one)})
                                 nmove = nmove - 1
+                                move(tm, dir)
                             end
                             if field[y][x - 1].weight <= stone.weight then
                                 field[y][x] = stoneColors.invis
