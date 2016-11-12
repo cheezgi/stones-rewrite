@@ -343,8 +343,10 @@ function move(stone, dir) -- {{{
                                 eval({Statement.new(tm, directions.up, numbers.one)})
                                 nmove = nmove - 1
                             end
-                            field[y][x] = stoneColors.invis
-                            field[y - 1][x] = stone
+                            if field[y - 1][x].weight <= stone.weight then
+                                field[y][x] = stoneColors.invis
+                                field[y - 1][x] = stone
+                            end
                         end
                     else
                         if field[field.height][x].weight <= stone.weight then
@@ -356,14 +358,16 @@ function move(stone, dir) -- {{{
                                 eval({Statement.new(tm, directions.up, numbers.one)})
                                 nmove = nmove - 1
                             end
-                            field[y][x] = stoneColors.invis
-                            field[field.height][x] = stone
+                            if field[field.height][x].weight <= stone.weight then
+                                field[y][x] = stoneColors.invis
+                                field[field.height][x] = stone
+                            end
                         end
                     end
                     goto done
                 elseif dir == "down" then
                     if y ~= field.height then
-                        if field[y + 1][x].wieght <= stone.weight then
+                        if field[y + 1][x].weight <= stone.weight then
                             if field[y + 1][x] ~= stoneColors.invis then
                                 local tm = field[y + 1][x]
                                 move(tm, dir)
@@ -371,8 +375,10 @@ function move(stone, dir) -- {{{
                                 eval({Statement.new(tm, directions.down, numbers.one)})
                                 nmove = nmove - 1
                             end
-                            field[y][x] = stoneColors.invis
-                            field[y + 1][x] = stone
+                            if field[y + 1][x].weight <= stone.weight then
+                                field[y][x] = stoneColors.invis
+                                field[y + 1][x] = stone
+                            end
                         end
                     else
                         if field[1][x].weight <= stone.weight then
@@ -383,8 +389,10 @@ function move(stone, dir) -- {{{
                                 eval({Statement.new(tm, directions.down, numbers.one)})
                                 nmove = nmove - 1
                             end
-                            field[y][x] = stoneColors.invis
-                            field[1][x] = stone
+                            if field[1][x].weight <= stone.weight then
+                                field[y][x] = stoneColors.invis
+                                field[1][x] = stone
+                            end
                         end
                     end
                     goto done
@@ -398,8 +406,10 @@ function move(stone, dir) -- {{{
                                 eval({Statement.new(tm, directions.left, numbers.one)})
                                 nmove = nmove - 1
                             end
-                            field[y][x] = stoneColors.invis
-                            field[y][x - 1] = stone
+                            if field[y][x - 1].weight <= stone.weight then
+                                field[y][x] = stoneColors.invis
+                                field[y][x - 1] = stone
+                            end
                         end
                     else
                         if field[y][field.width].weight <= stone.weight then
@@ -410,8 +420,10 @@ function move(stone, dir) -- {{{
                                 eval({Statement.new(tm, directions.left, numbers.one)})
                                 nmove = nmove - 1
                             end
-                            field[y][x] = stoneColors.invis
-                            field[y][field.width] = stone
+                            if field[y][field.width].weight <= stone.weight then
+                                field[y][x] = stoneColors.invis
+                                field[y][field.width] = stone
+                            end
                         end
                     end
                     goto done
@@ -425,8 +437,10 @@ function move(stone, dir) -- {{{
                                 eval({Statement.new(tm, directions.right, numbers.one)})
                                 nmove = nmove - 1
                             end
-                            field[y][x] = stoneColors.invis
-                            field[y][x + 1] = stone
+                            if field[y][x + 1].weight <= stone.weight then
+                                field[y][x] = stoneColors.invis
+                                field[y][x + 1] = stone
+                            end
                         end
                     else
                         if field[y][1].weight <= stone.weight then
@@ -437,8 +451,10 @@ function move(stone, dir) -- {{{
                                 eval({Statement.new(tm, directions.right, numbers.one)})
                                 nmove = nmove - 1
                             end
-                            field[y][x] = stoneColors.invis
-                            field[y][1] = stone
+                            if field[y][1].weight <= stone.weight then
+                                field[y][x] = stoneColors.invis
+                                field[y][1] = stone
+                            end
                         end
                     end
                     goto done
