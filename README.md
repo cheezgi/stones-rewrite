@@ -20,9 +20,9 @@ TODO:
     * [ ] Control flow stuff
         * [X] `if`, `else`, `end`
         * [ ] `while`
-    * [ ] Stone movement mechanics
+    * [X] Stone movement mechanics
         * [X] Stones move each other around
-        * [ ] Weight of stones factors into wether or not anything happens
+        * [X] Weight of stones factors into wether or not anything happens
 
 Hey, looks like I'm almost finished. This is currently the reference
 interpreter for the stones programming language. Eventually I'll get around
