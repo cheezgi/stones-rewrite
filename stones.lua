@@ -346,7 +346,6 @@ function eval(proc)
             if nmove > 0 then
                 print("MOVE " .. nmove .. ":", stmt.color, stmt.direction, stmt.number, frames[cf], #frames)
             else
-                if stmt.number == nil and stmt.color == "red" then print("should be three") end
                 print(k .. ":", stmt.color, stmt.direction, stmt.number, frames[cf], #frames)
             end
         end
