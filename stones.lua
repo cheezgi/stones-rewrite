@@ -396,10 +396,9 @@ function move(stone, dir) -- {{{
                                     eval({Statement.new(tm, directions.up, numbers.one)})
                                     nmove = nmove - 1
                                 end
-                            else
-                                field[y][x] = stoneColors.invis
-                                field[y - 1][x] = stone
                             end
+                            field[y][x] = stoneColors.invis
+                            field[y - 1][x] = stone
                             return true
                         else
                             print("clink")
@@ -415,10 +414,9 @@ function move(stone, dir) -- {{{
                                     eval({Statement.new(tm, directions.up, numbers.one)})
                                     nmove = nmove - 1
                                 end
-                            else
-                                field[y][x] = stoneColors.invis
-                                field[field.height][x] = stone
                             end
+                            field[y][x] = stoneColors.invis
+                            field[field.height][x] = stone
                             return true
                         else
                             print("clink")
@@ -435,10 +433,9 @@ function move(stone, dir) -- {{{
                                     eval({Statement.new(tm, directions.down, numbers.one)})
                                     nmove = nmove - 1
                                 end
-                            else
-                                field[y][x] = stoneColors.invis
-                                field[y + 1][x] = stone
                             end
+                            field[y][x] = stoneColors.invis
+                            field[y + 1][x] = stone
                             return true
                         else
                             print("clink")
@@ -453,10 +450,9 @@ function move(stone, dir) -- {{{
                                     eval({Statement.new(tm, directions.down, numbers.one)})
                                     nmove = nmove - 1
                                 end
-                            else
-                                field[y][x] = stoneColors.invis
-                                field[1][x] = stone
                             end
+                            field[y][x] = stoneColors.invis
+                            field[1][x] = stone
                             return true
                         else
                             print("clink")
@@ -473,10 +469,9 @@ function move(stone, dir) -- {{{
                                     eval({Statement.new(tm, directions.left, numbers.one)})
                                     nmove = nmove - 1
                                 end
-                            else
-                                field[y][x] = stoneColors.invis
-                                field[y][x - 1] = stone
                             end
+                            field[y][x] = stoneColors.invis
+                            field[y][x - 1] = stone
                             return true
                         else
                             print("clink")
@@ -491,10 +486,9 @@ function move(stone, dir) -- {{{
                                     eval({Statement.new(tm, directions.left, numbers.one)})
                                     nmove = nmove - 1
                                 end
-                            else
-                                field[y][x] = stoneColors.invis
-                                field[y][field.width] = stone
                             end
+                            field[y][x] = stoneColors.invis
+                            field[y][field.width] = stone
                             return true
                         else
                             print("clink")
@@ -511,10 +505,9 @@ function move(stone, dir) -- {{{
                                     eval({Statement.new(tm, directions.right, numbers.one)})
                                     nmove = nmove - 1
                                 end
-                            else
-                                field[y][x] = stoneColors.invis
-                                field[y][x + 1] = stone
                             end
+                            field[y][x] = stoneColors.invis
+                            field[y][x + 1] = stone
                             return true
                         else
                             print("clink")
@@ -529,10 +522,9 @@ function move(stone, dir) -- {{{
                                     eval({Statement.new(tm, directions.right, numbers.one)})
                                     nmove = nmove - 1
                                 end
-                            else
-                                field[y][x] = stoneColors.invis
-                                field[y][1] = stone
                             end
+                            field[y][x] = stoneColors.invis
+                            field[y][1] = stone
                             return true
                         else
                             print("clink")
