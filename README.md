@@ -20,8 +20,9 @@ TODO:
     * [ ] Control flow stuff
         * [X] `if`, `else`, `end`
         * [ ] `while`
-    * [X] Stone movement mechanics
-        * [X] Stones move each other around
+    * [ ] Stone movement mechanics
+        * [ ] Stones move each other around
+              This is really buggy right now, I wouldn't call this finished
         * [X] Weight of stones factors into wether or not anything happens
 
 Hey, looks like I'm almost finished. This is currently the reference
