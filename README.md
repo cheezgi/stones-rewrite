@@ -15,12 +15,12 @@ see [this](https://github.com/cheezgi/stones)
 
 TODO:
 * [X] Set up skeleton
-* [O] Everything else
+* [ ] Everything else
     * [X] Stack stuff
-    * [o] Control flow stuff
+    * [ ] Control flow stuff
         * [X] `if`, `else`, `end`
         * [ ] `while`
-    * [o] Stone movement mechanics
+    * [ ] Stone movement mechanics
         * [X] Stones move each other around
         * [ ] Weight of stones factors into wether or not anything happens
 
