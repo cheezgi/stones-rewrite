@@ -391,11 +391,9 @@ function move(stone, dir) -- {{{
                             if field[y - 1][x] ~= stoneColors.invis then
                                 -- move it out of the way
                                 local tm = field[y - 1][x]
-                                if move(tm, dir) then
-                                    nmove = nmove + 1
-                                    eval({Statement.new(tm, directions.up, numbers.one)})
-                                    nmove = nmove - 1
-                                end
+                                nmove = nmove + 1
+                                eval({Statement.new(tm, directions.up, numbers.one)})
+                                nmove = nmove - 1
                             end
                             field[y][x] = stoneColors.invis
                             field[y - 1][x] = stone
@@ -409,11 +407,9 @@ function move(stone, dir) -- {{{
                             -- wrap stone around
                             if field[field.height][x] ~= stoneColors.invis then
                                 local tm = field[field.height][x]
-                                if move(tm, dir) then
-                                    nmove = nmove + 1
-                                    eval({Statement.new(tm, directions.up, numbers.one)})
-                                    nmove = nmove - 1
-                                end
+                                nmove = nmove + 1
+                                eval({Statement.new(tm, directions.up, numbers.one)})
+                                nmove = nmove - 1
                             end
                             field[y][x] = stoneColors.invis
                             field[field.height][x] = stone
@@ -428,11 +424,9 @@ function move(stone, dir) -- {{{
                         if field[y + 1][x].weight <= stone.weight then
                             if field[y + 1][x] ~= stoneColors.invis then
                                 local tm = field[y + 1][x]
-                                if move(tm, dir) then
-                                    nmove = nmove + 1
-                                    eval({Statement.new(tm, directions.down, numbers.one)})
-                                    nmove = nmove - 1
-                                end
+                                nmove = nmove + 1
+                                eval({Statement.new(tm, directions.down, numbers.one)})
+                                nmove = nmove - 1
                             end
                             field[y][x] = stoneColors.invis
                             field[y + 1][x] = stone
@@ -445,11 +439,9 @@ function move(stone, dir) -- {{{
                         if field[1][x].weight <= stone.weight then
                             if field[1][x] ~= stoneColors.invis then
                                 local tm = field[1][x]
-                                if move(tm, dir) then
-                                    nmove = nmove + 1
-                                    eval({Statement.new(tm, directions.down, numbers.one)})
-                                    nmove = nmove - 1
-                                end
+                                nmove = nmove + 1
+                                eval({Statement.new(tm, directions.down, numbers.one)})
+                                nmove = nmove - 1
                             end
                             field[y][x] = stoneColors.invis
                             field[1][x] = stone
@@ -464,11 +456,9 @@ function move(stone, dir) -- {{{
                         if field[y][x - 1].weight <= stone.weight then
                             if field[y][x - 1] ~= stoneColors.invis then
                                 local tm = field[y][x - 1]
-                                --if move(tm, dir) then
-                                    nmove = nmove + 1
-                                    eval({Statement.new(tm, directions.left, numbers.one)})
-                                    nmove = nmove - 1
-                                --end
+                                nmove = nmove + 1
+                                eval({Statement.new(tm, directions.left, numbers.one)})
+                                nmove = nmove - 1
                             end
                             field[y][x] = stoneColors.invis
                             field[y][x - 1] = stone
@@ -481,11 +471,9 @@ function move(stone, dir) -- {{{
                         if field[y][field.width].weight <= stone.weight then
                             if field[y][field.width] ~= stoneColors.invis then
                                 local tm = field[y][field.width]
-                                if move(tm, dir) then
-                                    nmove = nmove + 1
-                                    eval({Statement.new(tm, directions.left, numbers.one)})
-                                    nmove = nmove - 1
-                                end
+                                nmove = nmove + 1
+                                eval({Statement.new(tm, directions.left, numbers.one)})
+                                nmove = nmove - 1
                             end
                             field[y][x] = stoneColors.invis
                             field[y][field.width] = stone
@@ -500,11 +488,9 @@ function move(stone, dir) -- {{{
                         if field[y][x + 1].weight <= stone.weight then
                             if field[y][x + 1] ~= stoneColors.invis then
                                 local tm = field[y][x + 1]
-                                if move(tm, dir) then
-                                    nmove = nmove + 1
-                                    eval({Statement.new(tm, directions.right, numbers.one)})
-                                    nmove = nmove - 1
-                                end
+                                nmove = nmove + 1
+                                eval({Statement.new(tm, directions.right, numbers.one)})
+                                nmove = nmove - 1
                             end
                             field[y][x] = stoneColors.invis
                             field[y][x + 1] = stone
@@ -517,11 +503,9 @@ function move(stone, dir) -- {{{
                         if field[y][1].weight <= stone.weight then
                             if field[y][1] ~= stoneColors.invis then
                                 local tm = field[y][1]
-                                if move(tm, dir) then
-                                    nmove = nmove + 1
-                                    eval({Statement.new(tm, directions.right, numbers.one)})
-                                    nmove = nmove - 1
-                                end
+                                nmove = nmove + 1
+                                eval({Statement.new(tm, directions.right, numbers.one)})
+                                nmove = nmove - 1
                             end
                             field[y][x] = stoneColors.invis
                             field[y][1] = stone
