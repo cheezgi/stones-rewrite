@@ -402,6 +402,7 @@ function move(stone, dir) -- {{{
                             end
                             return true
                         else
+                            print("clink")
                             return false
                         end
                     else
@@ -420,6 +421,7 @@ function move(stone, dir) -- {{{
                             end
                             return true
                         else
+                            print("clink")
                             return false
                         end
                     end
@@ -439,6 +441,7 @@ function move(stone, dir) -- {{{
                             end
                             return true
                         else
+                            print("clink")
                             return false
                         end
                     else
@@ -456,6 +459,7 @@ function move(stone, dir) -- {{{
                             end
                             return true
                         else
+                            print("clink")
                             return false
                         end
                     end
@@ -468,13 +472,15 @@ function move(stone, dir) -- {{{
                                 eval({Statement.new(tm, directions.left, numbers.one)})
                                 nmove = nmove - 1
                                 move(tm, dir)
-                            end
-                            if field[y][x - 1].weight <= stone.weight then
+                            else
                                 field[y][x] = stoneColors.invis
                                 field[y][x - 1] = stone
                             end
+                            --if field[y][x - 1].weight <= stone.weight then
+                            --end
                             return true
                         else
+                            print("clink")
                             return false
                         end
                     else
@@ -492,6 +498,7 @@ function move(stone, dir) -- {{{
                             end
                             return true
                         else
+                            print("clink")
                             return false
                         end
                     end
@@ -511,6 +518,7 @@ function move(stone, dir) -- {{{
                             end
                             return true
                         else
+                            print("clink")
                             return false
                         end
                     else
@@ -528,6 +536,7 @@ function move(stone, dir) -- {{{
                             end
                             return true
                         else
+                            print("clink")
                             return false
                         end
                     end
