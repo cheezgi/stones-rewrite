@@ -309,7 +309,6 @@ function eval(proc)
                         io.flush()
                     elseif stmt.direction == "right" then                                                 -- quine
                         io.write("blue right")
-                        os.exit(0)
                     end
                 end
             end
@@ -328,10 +327,16 @@ function eval(proc)
                 frames[cf] = not frames[cf]
                 move(stoneColors.purple, stmt.direction)
             elseif stmt.direction == "left" then                                                      -- while
+                table.insert(frames, true)
+                cf = cf + 1
                 move(stoneColors.purple, stmt.direction)
             elseif stmt.direction == "right" then                                                     -- end
-                table.remove(frames)
-                cf = cf - 1
+                if cf ~= 1 then
+                    table.remove(frames)
+                    cf = cf - 1
+                else
+                    print("mismatching if/else/while/end")
+                end
                 move(stoneColors.purple, stmt.direction)
             end
         end
