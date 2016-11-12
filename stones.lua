@@ -165,6 +165,7 @@ function eval(proc)
                         stack:push(false)
                     end
                 end
+                for i = 1, stmt.number do move(stoneColors.red, stmt.direction) end
             end
         elseif stmt.color == "orange" then
             if frames[cf] then
@@ -185,6 +186,7 @@ function eval(proc)
                     elseif stmt.number == 2 then                         -- nothing yet: gotos?
                     end
                 end
+                for i = 1, stmt.number do move(stoneColors.orange, stmt.direction) end
             end
         elseif stmt.color == "yellow" then
             if frames[cf] then
@@ -203,6 +205,7 @@ function eval(proc)
                 elseif stmt.direction == "right" then                    -- /
                     stack:push(rhs / lhs)
                 end
+                move(stoneColors.yellow, stmt.direction)
             end
         elseif stmt.color == "green" then
             if frames[cf] then
@@ -231,6 +234,7 @@ function eval(proc)
                 elseif stmt.direction == "right" then                    -- not
                     stack:push(not stack:pop()) -- boolean check?
                 end
+                move(stoneColors.green, stmt.direction)
             end
         elseif stmt.color == "blue" then
             if frames[cf] then
@@ -244,6 +248,7 @@ function eval(proc)
                     io.write("blue right")
                     os.exit(0)
                 end
+                move(stoneColors.blue, stmt.direction)
             end
         elseif stmt.color == "purple" then
             if stmt.direction == "up" then                               -- if
@@ -254,13 +259,16 @@ function eval(proc)
                         table.insert(frames, false)
                     end
                     cf = cf + 1
+                    move(stoneColors.purple, stmt.direction)
                 end
             elseif stmt.direction == "down" then                         -- else
                 frames[cf] = not frames[cf]
+                move(stoneColors.purple, stmt.direction)
             elseif stmt.direction == "left" then                         -- while
             elseif stmt.direction == "right" then                        -- end
                 table.remove(frames)
                 cf = cf - 1
+                move(stoneColors.purple, stmt.direction)
             end
         end
 
