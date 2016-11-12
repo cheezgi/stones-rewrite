@@ -136,7 +136,7 @@ function eval(proc)
                 if stmt.direction == "up" then
                     if stmt.number == 1 then                                                          -- 0
                         stack:push(0)
-                        move(stoneColors.red, stmt,direction)
+                        move(stoneColors.red, stmt.direction)
                     elseif stmt.number == 2 then                                                      -- 4
                         stack:push(4)
                         for i = 1, 2 do move(stoneColors.red, stmt.direction) end
@@ -147,7 +147,7 @@ function eval(proc)
                 elseif stmt.direction == "down" then
                     if stmt.number == 1 then                                                          -- 1
                         stack:push(1)
-                        move(stoneColors.red, stmt,direction)
+                        move(stoneColors.red, stmt.direction)
                     elseif stmt.number == 2 then                                                      -- 5
                         stack:push(5)
                         for i = 1, 2 do move(stoneColors.red, stmt.direction) end
@@ -158,7 +158,7 @@ function eval(proc)
                 elseif stmt.direction == "left" then
                     if stmt.number == 1 then                                                          -- 2
                         stack:push(2)
-                        move(stoneColors.red, stmt,direction)
+                        move(stoneColors.red, stmt.direction)
                     elseif stmt.number == 2 then                                                      -- 6
                         stack:push(6)
                         for i = 1, 2 do move(stoneColors.red, stmt.direction) end
@@ -169,7 +169,7 @@ function eval(proc)
                 elseif stmt.direction == "right" then
                     if stmt.number == 1 then                                                          -- 3
                         stack:push(3)
-                        move(stoneColors.red, stmt,direction)
+                        move(stoneColors.red, stmt.direction)
                     elseif stmt.number == 2 then                                                      -- 7
                         stack:push(7)
                         for i = 1, 2 do move(stoneColors.red, stmt.direction) end
