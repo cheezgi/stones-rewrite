@@ -123,12 +123,10 @@ function parse(tokens) -- {{{
 end -- }}}
 
 -- function eval(proc) {{{
---local frames = Stack.new()
 local frames = {true}
 local cf = #frames
 local stack = Stack.new()
 local field = require("field")
---frames:push(true)
 
 function eval(proc)
     for k, stmt in ipairs(proc) do
