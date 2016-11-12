@@ -1,5 +1,3 @@
-#!/usr/bin/env lua
-
 -- external libraries
 local ml = require("libs.ml")
 
