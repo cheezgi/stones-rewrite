@@ -311,7 +311,12 @@ function eval(proc)
                     if stmt.direction == "up" then                                                        -- print
                         io.write(tostring(stack:pop()))
                     elseif stmt.direction == "down" then                                                  -- input
-                        stack:push(tonumber(io.read()))
+                        local input = io.read()
+                        if tonumber(input) then
+                            stack:push(tonumber(input))
+                        else
+                            stack:push(input)
+                        end
                     elseif stmt.direction == "left" then                                                  -- printc
                         io.write(string.char(stack:pop()))
                         io.flush()
