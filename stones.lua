@@ -395,8 +395,7 @@ function move(stone, dir) -- {{{
                                 eval({Statement.new(tm, directions.up, numbers.one)})
                                 nmove = nmove - 1
                                 move(tm, dir)
-                            end
-                            if field[y - 1][x].weight <= stone.weight then
+                            else
                                 field[y][x] = stoneColors.invis
                                 field[y - 1][x] = stone
                             end
@@ -414,8 +413,7 @@ function move(stone, dir) -- {{{
                                 eval({Statement.new(tm, directions.up, numbers.one)})
                                 nmove = nmove - 1
                                 move(tm, dir)
-                            end
-                            if field[field.height][x].weight <= stone.weight then
+                            else
                                 field[y][x] = stoneColors.invis
                                 field[field.height][x] = stone
                             end
@@ -434,8 +432,7 @@ function move(stone, dir) -- {{{
                                 eval({Statement.new(tm, directions.down, numbers.one)})
                                 nmove = nmove - 1
                                 move(tm, dir)
-                            end
-                            if field[y + 1][x].weight <= stone.weight then
+                            else
                                 field[y][x] = stoneColors.invis
                                 field[y + 1][x] = stone
                             end
@@ -452,8 +449,7 @@ function move(stone, dir) -- {{{
                                 eval({Statement.new(tm, directions.down, numbers.one)})
                                 nmove = nmove - 1
                                 move(tm, dir)
-                            end
-                            if field[1][x].weight <= stone.weight then
+                            else
                                 field[y][x] = stoneColors.invis
                                 field[1][x] = stone
                             end
@@ -476,8 +472,6 @@ function move(stone, dir) -- {{{
                                 field[y][x] = stoneColors.invis
                                 field[y][x - 1] = stone
                             end
-                            --if field[y][x - 1].weight <= stone.weight then
-                            --end
                             return true
                         else
                             print("clink")
@@ -491,8 +485,7 @@ function move(stone, dir) -- {{{
                                 eval({Statement.new(tm, directions.left, numbers.one)})
                                 nmove = nmove - 1
                                 move(tm, dir)
-                            end
-                            if field[y][field.width].weight <= stone.weight then
+                            else
                                 field[y][x] = stoneColors.invis
                                 field[y][field.width] = stone
                             end
@@ -511,8 +504,7 @@ function move(stone, dir) -- {{{
                                 eval({Statement.new(tm, directions.right, numbers.one)})
                                 nmove = nmove - 1
                                 move(tm, dir)
-                            end
-                            if field[y][x + 1].weight <= stone.weight then
+                            else
                                 field[y][x] = stoneColors.invis
                                 field[y][x + 1] = stone
                             end
@@ -529,8 +521,7 @@ function move(stone, dir) -- {{{
                                 eval({Statement.new(tm, directions.right, numbers.one)})
                                 nmove = nmove - 1
                                 move(tm, dir)
-                            end
-                            if field[y][1].weight <= stone.weight then
+                            else
                                 field[y][x] = stoneColors.invis
                                 field[y][1] = stone
                             end
