@@ -25,8 +25,6 @@ function lex(lines) -- {{{
         end
     end
 
-    --for k,v in ipairs(rawtokens) do print(v) end
-
     -- convert raw tokens to real tokens
     for k, token in ipairs(rawtokens) do
         if token == "red" then
@@ -140,7 +138,7 @@ function eval(proc)
                     elseif stmt.number == 2 then                                                      -- 4
                         stack:push(4)
                         for i = 1, 2 do move(stoneColors.red, stmt.direction) end
-                    else                                                                              -- 8
+                    elseif stmt.number == 3 then                                                      -- 8
                         stack:push(8)
                         for i = 1, 3 do move(stoneColors.red, stmt.direction) end
                     end
@@ -151,7 +149,7 @@ function eval(proc)
                     elseif stmt.number == 2 then                                                      -- 5
                         stack:push(5)
                         for i = 1, 2 do move(stoneColors.red, stmt.direction) end
-                    else                                                                              -- 9
+                    elseif stmt.number == 3 then                                                      -- 9
                         stack:push(9)
                         for i = 1, 3 do move(stoneColors.red, stmt.direction) end
                     end
@@ -162,7 +160,7 @@ function eval(proc)
                     elseif stmt.number == 2 then                                                      -- 6
                         stack:push(6)
                         for i = 1, 2 do move(stoneColors.red, stmt.direction) end
-                    else                                                                              -- true
+                    elseif stmt.number == 3 then                                                      -- true
                         stack:push(true)
                         for i = 1, 3 do move(stoneColors.red, stmt.direction) end
                     end
@@ -173,7 +171,7 @@ function eval(proc)
                     elseif stmt.number == 2 then                                                      -- 7
                         stack:push(7)
                         for i = 1, 2 do move(stoneColors.red, stmt.direction) end
-                    else                                                                              -- false
+                    elseif stmt.number == 3 then                                                      -- false
                         stack:push(false)
                         for i = 1, 3 do move(stoneColors.red, stmt.direction) end
                     end
@@ -288,6 +286,7 @@ function eval(proc)
             if nmove > 0 then
                 print("MOVE " .. nmove .. ":", stmt.color, stmt.direction, stmt.number, frames[cf], #frames)
             else
+                if stmt.number == nil and stmt.color == "red" then print("should be three") end
                 print(k .. ":", stmt.color, stmt.direction, stmt.number, frames[cf], #frames)
             end
         end
