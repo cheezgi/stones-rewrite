@@ -125,6 +125,8 @@ end -- }}}
 
 -- function eval(proc) {{{
 local frames = {true}
+local frames.wh = {false}
+local wf = 1
 local cf = #frames
 local stack = Stack.new()
 local field = require("field")
@@ -132,6 +134,7 @@ local nmove = 0
 
 function eval(proc)
     for k, stmt in ipairs(proc) do
+        ::top::
         if stmt.color == "red" then
             if frames[cf] then
                 if stmt.direction == "up" then
@@ -332,15 +335,25 @@ function eval(proc)
                 frames[cf] = not frames[cf]
                 move(stoneColors.purple, stmt.direction)
             elseif stmt.direction == "left" then                                                      -- while
-                table.insert(frames, true)
-                cf = cf + 1
-                move(stoneColors.purple, stmt.direction)
+                if frames[cf] then
+                    table.insert(frames.wh, true)
+                    cf = cf + 1
+                    wf = wf + 1
+                    move(stoneColors.purple, stmt.direction)
+                end
             elseif stmt.direction == "right" then                                                     -- end
                 if cf ~= 1 then
                     table.remove(frames)
                     cf = cf - 1
                 else
-                    print("Mismatching if/else/while/end")
+                    print("Mismatching if/else/end")
+                    os.exit(1)
+                end
+                if wf ~= 1 then
+                    table.remove(frames.wh)
+                    wf = wf - 1
+                else
+                    print("Mismatching while/end")
                     os.exit(1)
                 end
                 move(stoneColors.purple, stmt.direction)
@@ -381,6 +394,10 @@ function eval(proc)
                     print("")
                 end
             end
+        end
+
+        if frames.wh[wf] then
+            goto top
         end
     end
 end -- }}}
