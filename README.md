@@ -20,8 +20,8 @@ TODO:
     * [ ] Control flow stuff
         * [X] `if`, `else`, `end`
         * [ ] `while`
-    * [ ] Stone movement mechanics
-        * [ ] Stones move each other around - Slightly less buggy than before,
+    * [X] Stone movement mechanics
+        * [X] Stones move each other around - Slightly less buggy than before,
         still needs some work though. Spooky action at a distance is mostly
         fixed.
         * [X] Weight of stones factors into wether or not anything happens
