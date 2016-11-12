@@ -332,98 +332,114 @@ function move(stone, dir) -- {{{
                 if dir == "up" then
                     -- check for wrapping around
                     if y ~= 1 then
-                        -- check if stone is blocking
-                        -- TODO: check weight of stone
-                        if field[y - 1][x] ~= stoneColors.invis then
-                            -- move it out of the way
-                            local tm = field[y - 1][x]
-                            move(tm, dir)
-                            nmove = nmove + 1
-                            eval({Statement.new(tm, directions.up, numbers.one)})
-                            nmove = nmove - 1
+                        -- check weight of stone
+                        if field[y - 1][x].weight <= stone.weight then
+                            -- check if stone is blocking
+                            if field[y - 1][x] ~= stoneColors.invis then
+                                -- move it out of the way
+                                local tm = field[y - 1][x]
+                                move(tm, dir)
+                                nmove = nmove + 1
+                                eval({Statement.new(tm, directions.up, numbers.one)})
+                                nmove = nmove - 1
+                            end
+                            field[y][x] = stoneColors.invis
+                            field[y - 1][x] = stone
                         end
-                        field[y][x] = stoneColors.invis
-                        field[y - 1][x] = stone
                     else
-                        -- wrap stone around
-                        if field[field.height][x] ~= stoneColors.invis then
-                            local tm = field[field.height][x]
-                            move(tm, dir)
-                            nmove = nmove + 1
-                            eval({Statement.new(tm, directions.up, numbers.one)})
-                            nmove = nmove - 1
+                        if field[field.height][x].weight <= stone.weight then
+                            -- wrap stone around
+                            if field[field.height][x] ~= stoneColors.invis then
+                                local tm = field[field.height][x]
+                                move(tm, dir)
+                                nmove = nmove + 1
+                                eval({Statement.new(tm, directions.up, numbers.one)})
+                                nmove = nmove - 1
+                            end
+                            field[y][x] = stoneColors.invis
+                            field[field.height][x] = stone
                         end
-                        field[y][x] = stoneColors.invis
-                        field[field.height][x] = stone
                     end
                     goto done
                 elseif dir == "down" then
                     if y ~= field.height then
-                        if field[y + 1][x] ~= stoneColors.invis then
-                            local tm = field[y + 1][x]
-                            move(tm, dir)
-                            nmove = nmove + 1
-                            eval({Statement.new(tm, directions.down, numbers.one)})
-                            nmove = nmove - 1
+                        if field[y + 1][x].wieght <= stone.weight then
+                            if field[y + 1][x] ~= stoneColors.invis then
+                                local tm = field[y + 1][x]
+                                move(tm, dir)
+                                nmove = nmove + 1
+                                eval({Statement.new(tm, directions.down, numbers.one)})
+                                nmove = nmove - 1
+                            end
+                            field[y][x] = stoneColors.invis
+                            field[y + 1][x] = stone
                         end
-                        field[y][x] = stoneColors.invis
-                        field[y + 1][x] = stone
                     else
-                        if field[1][x] ~= stoneColors.invis then
-                            local tm = field[1][x]
-                            move(tm, dir)
-                            nmove = nmove + 1
-                            eval({Statement.new(tm, directions.down, numbers.one)})
-                            nmove = nmove - 1
+                        if field[1][x].weight <= stone.weight then
+                            if field[1][x] ~= stoneColors.invis then
+                                local tm = field[1][x]
+                                move(tm, dir)
+                                nmove = nmove + 1
+                                eval({Statement.new(tm, directions.down, numbers.one)})
+                                nmove = nmove - 1
+                            end
+                            field[y][x] = stoneColors.invis
+                            field[1][x] = stone
                         end
-                        field[y][x] = stoneColors.invis
-                        field[1][x] = stone
                     end
                     goto done
                 elseif dir == "left" then
                     if x ~= 1 then
-                        if field[y][x - 1] ~= stoneColors.invis then
-                            local tm = field[y][x - 1]
-                            move(tm, dir)
-                            nmove = nmove + 1
-                            eval({Statement.new(tm, directions.left, numbers.one)})
-                            nmove = nmove - 1
+                        if field[y][x - 1].weight <= stone.weight then
+                            if field[y][x - 1] ~= stoneColors.invis then
+                                local tm = field[y][x - 1]
+                                move(tm, dir)
+                                nmove = nmove + 1
+                                eval({Statement.new(tm, directions.left, numbers.one)})
+                                nmove = nmove - 1
+                            end
+                            field[y][x] = stoneColors.invis
+                            field[y][x - 1] = stone
                         end
-                        field[y][x] = stoneColors.invis
-                        field[y][x - 1] = stone
                     else
-                        if field[y][field.width] ~= stoneColors.invis then
-                            local tm = field[y][field.width]
-                            move(tm, dir)
-                            nmove = nmove + 1
-                            eval({Statement.new(tm, directions.left, numbers.one)})
-                            nmove = nmove - 1
+                        if field[y][field.width].weight <= stone.weight then
+                            if field[y][field.width] ~= stoneColors.invis then
+                                local tm = field[y][field.width]
+                                move(tm, dir)
+                                nmove = nmove + 1
+                                eval({Statement.new(tm, directions.left, numbers.one)})
+                                nmove = nmove - 1
+                            end
+                            field[y][x] = stoneColors.invis
+                            field[y][field.width] = stone
                         end
-                        field[y][x] = stoneColors.invis
-                        field[y][field.width] = stone
                     end
                     goto done
                 elseif dir == "right" then
                     if x ~= field.width then
-                        if field[y][x + 1] ~= stoneColors.invis then
-                            local tm = field[y][x + 1]
-                            move(tm, dir)
-                            nmove = nmove + 1
-                            eval({Statement.new(tm, directions.right, numbers.one)})
-                            nmove = nmove - 1
+                        if field[y][x + 1].weight <= stone.weight then
+                            if field[y][x + 1] ~= stoneColors.invis then
+                                local tm = field[y][x + 1]
+                                move(tm, dir)
+                                nmove = nmove + 1
+                                eval({Statement.new(tm, directions.right, numbers.one)})
+                                nmove = nmove - 1
+                            end
+                            field[y][x] = stoneColors.invis
+                            field[y][x + 1] = stone
                         end
-                        field[y][x] = stoneColors.invis
-                        field[y][x + 1] = stone
                     else
-                        if field[y][1] ~= stoneColors.invis then
-                            local tm = field[y][1]
-                            move(tm, dir)
-                            nmove = nmove + 1
-                            eval({Statement.new(tm, directions.right, numbers.one)})
-                            nmove = nmove - 1
+                        if field[y][1].weight <= stone.weight then
+                            if field[y][1] ~= stoneColors.invis then
+                                local tm = field[y][1]
+                                move(tm, dir)
+                                nmove = nmove + 1
+                                eval({Statement.new(tm, directions.right, numbers.one)})
+                                nmove = nmove - 1
+                            end
+                            field[y][x] = stoneColors.invis
+                            field[y][1] = stone
                         end
-                        field[y][x] = stoneColors.invis
-                        field[y][1] = stone
                     end
                     goto done
                 end
