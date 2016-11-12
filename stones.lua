@@ -124,10 +124,6 @@ local cf = #frames
 local stack = Stack.new()
 local field = require("field")
 local nmove = 0
-stack:push(1)
-stack:push(1)
-stack:push(1)
-stack:push(1)
 
 function eval(proc)
     for k, stmt in ipairs(proc) do
