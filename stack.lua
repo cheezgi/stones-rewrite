@@ -24,6 +24,7 @@ function Stack:push(val)
 end
 
 function Stack:pop()
+    self.last = self.table[#self.table - 1]
     return table.remove(self.table)
 end
 

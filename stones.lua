@@ -25,6 +25,8 @@ function lex(lines) -- {{{
         end
     end
 
+    --for k,v in ipairs(rawtokens) do print(v) end
+
     -- convert raw tokens to real tokens
     for k, token in ipairs(rawtokens) do
         if token == "red" then
@@ -63,7 +65,6 @@ function parse(tokens) -- {{{
     local statements = {}
     local k = 1
     local i = 1
-    --for k,v in ipairs(tokens) do print(ml.tstring(v)) end
 
     -- oh boy - loop through list of tokens
     while i < #tokens do
@@ -98,14 +99,19 @@ function parse(tokens) -- {{{
                             end
                         end
                     else
-                        -- not really sure what to do here
+                        -- last two tokens
+                        if tokens[i] == stoneColors.red or tokens[i] == stoneColors.orange then
+                            error("Expected number for orange/red in statement #" .. tostring(k))
+                        else
+                            table.insert(statements, Statement.new(tokens[i], tokens[i + 1], nil, k))
+                        end
                         i = i + 1
                     end
                 else
                     error("Expected direction after color in statement #" .. tostring(k))
                 end
             else
-                -- or here
+                -- last tokens
                 i = i + 1
             end
         else
@@ -117,16 +123,17 @@ function parse(tokens) -- {{{
 end -- }}}
 
 -- function eval(proc) {{{
-local frames = Stack.new()
+--local frames = Stack.new()
+local frames = {true}
 local cf = #frames
 local stack = Stack.new()
 local field = require("field")
-frames:push(true)
+--frames:push(true)
 
 function eval(proc)
     for k, stmt in ipairs(proc) do
         if stmt.color == "red" then
-            if frames.last then
+            if frames[cf] then
                 if stmt.direction == "up" then
                     if stmt.number == 1 then                             -- 0
                         stack:push(0)
@@ -162,7 +169,7 @@ function eval(proc)
                 end
             end
         elseif stmt.color == "orange" then
-            if frames.last then
+            if frames[cf] then
                 if stmt.direction == "up" then
                     if stmt.number == 1 then                             -- [
                     elseif stmt.number == 2 then                         -- ==
@@ -182,7 +189,7 @@ function eval(proc)
                 end
             end
         elseif stmt.color == "yellow" then
-            if frames.last then
+            if frames[cf] then
                 local lhs = stack:pop()
                 local rhs = stack:pop()
                 if type(lhs) ~= "number" or type(rhs) ~= "number" then
@@ -200,7 +207,7 @@ function eval(proc)
                 end
             end
         elseif stmt.color == "green" then
-            if frames.last then
+            if frames[cf] then
                 if stmt.direction == "up" then                           -- roll
                     local depth = stack:pop()
                     local toroll = {}
@@ -228,7 +235,7 @@ function eval(proc)
                 end
             end
         elseif stmt.color == "blue" then
-            if frames.last then
+            if frames[cf] then
                 if stmt.direction == "up" then                           -- print
                     io.write(tostring(stack:pop()))
                 elseif stmt.direction == "down" then                     -- input
@@ -242,21 +249,25 @@ function eval(proc)
             end
         elseif stmt.color == "purple" then
             if stmt.direction == "up" then                               -- if
-                if stack:pop() then
-                    frames:push(true)
-                else
-                    frames:push(false)
+                if frames[cf] then
+                    if stack:pop() then
+                        table.insert(frames, true)
+                    else
+                        table.insert(frames, false)
+                    end
+                    cf = cf + 1
                 end
             elseif stmt.direction == "down" then                         -- else
-                frames.last = not frames.last
+                frames[cf] = not frames[cf]
             elseif stmt.direction == "left" then                         -- while
             elseif stmt.direction == "right" then                        -- end
-                frames:pop()
+                table.remove(frames)
+                cf = cf - 1
             end
         end
 
         if args.debug then
-            print(k .. ":", stmt.color, stmt.direction, stmt.number, frames.last, #frames)
+            print(k .. ":", stmt.color, stmt.direction, stmt.number, frames[cf], #frames)
         end
         if args.stack then
             print(k, "stack:")

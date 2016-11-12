@@ -18,7 +18,8 @@ purple up condition is true
     blue left !
 purple right
 
-red up 1
+ared aup a1
+red right 3
 purple up condition is false
     red right 1 don't do this
     red down 3
@@ -33,7 +34,8 @@ purple down
     blue left Q
 purple right
 
-red down 1
+ared adown a1
+red left 3
 purple up condition is true
     red right 1 do this
     red down 3
@@ -50,9 +52,11 @@ purple right
 
 nested? maybe
 
-red down 1
+ared adown a1
+red left 3
 purple up
-    red down 1
+    ared adown a1
+    red left 3
     purple up oh boy
         red down 3
         red down 3
@@ -62,14 +66,16 @@ purple up
 purple right
 
 hey it works! let's try again
-red up 1
+ared aup a1
+red right 3
 purple up
     red down 3 don't do this
     red down 3
     yellow up
     blue left
 purple down
-    red down 1 do this
+    ared adown a1 do this
+    red left 3
     purple up
         red right 2 do this
         red up 3
@@ -144,23 +150,27 @@ purple down
         yellow down
         yellow up
         blue left !
-        red down 1
+        ared adown a1
+        red left 3
         purple up
-            red down 1
+            ared adown a1
+            red left 3
             purple up oh boy
                 red down 3
                 red down 3
                 yellow up
                 blue left Q
             purple right
-            red up 1
+            ared aup a1
+            red right 3
             purple up
                 red down 3 don't do this
                 red down 3
                 yellow up
                 blue left
             purple down
-                red down 1 do this
+                ared adown a1 do this
+                red left 3
                 purple up
                     red right 2 do this
                     red up 3
@@ -179,7 +189,7 @@ purple down
             purple right
         purple right
     purple right
-purple right
+apurple aright
 
 red right 2 do this
 red up 3
@@ -215,4 +225,3 @@ red down 2
 red down 2
 yellow down
 blue left \n
-
