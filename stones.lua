@@ -127,89 +127,100 @@ local frames = {true}
 local cf = #frames
 local stack = Stack.new()
 local field = require("field")
+local nmove = 0
 
 function eval(proc)
     for k, stmt in ipairs(proc) do
         if stmt.color == "red" then
             if frames[cf] then
                 if stmt.direction == "up" then
-                    if stmt.number == 1 then                             -- 0
+                    if stmt.number == 1 then                                                          -- 0
                         stack:push(0)
-                    elseif stmt.number == 2 then                         -- 4
+                        move(stoneColors.red, stmt,direction)
+                    elseif stmt.number == 2 then                                                      -- 4
                         stack:push(4)
-                    else                                                 -- 8
+                        for i = 1, 2 do move(stoneColors.red, stmt.direction) end
+                    else                                                                              -- 8
                         stack:push(8)
+                        for i = 1, 3 do move(stoneColors.red, stmt.direction) end
                     end
                 elseif stmt.direction == "down" then
-                    if stmt.number == 1 then                             -- 1
+                    if stmt.number == 1 then                                                          -- 1
                         stack:push(1)
-                    elseif stmt.number == 2 then                         -- 5
+                        move(stoneColors.red, stmt,direction)
+                    elseif stmt.number == 2 then                                                      -- 5
                         stack:push(5)
-                    else                                                 -- 9
+                        for i = 1, 2 do move(stoneColors.red, stmt.direction) end
+                    else                                                                              -- 9
                         stack:push(9)
+                        for i = 1, 3 do move(stoneColors.red, stmt.direction) end
                     end
                 elseif stmt.direction == "left" then
-                    if stmt.number == 1 then                             -- 2
+                    if stmt.number == 1 then                                                          -- 2
                         stack:push(2)
-                    elseif stmt.number == 2 then                         -- 6
+                        move(stoneColors.red, stmt,direction)
+                    elseif stmt.number == 2 then                                                      -- 6
                         stack:push(6)
-                    else                                                 -- true
+                        for i = 1, 2 do move(stoneColors.red, stmt.direction) end
+                    else                                                                              -- true
                         stack:push(true)
+                        for i = 1, 3 do move(stoneColors.red, stmt.direction) end
                     end
                 elseif stmt.direction == "right" then
-                    if stmt.number == 1 then                             -- 3
+                    if stmt.number == 1 then                                                          -- 3
                         stack:push(3)
-                    elseif stmt.number == 2 then                         -- 7
+                        move(stoneColors.red, stmt,direction)
+                    elseif stmt.number == 2 then                                                      -- 7
                         stack:push(7)
-                    else                                                 -- false
+                        for i = 1, 2 do move(stoneColors.red, stmt.direction) end
+                    else                                                                              -- false
                         stack:push(false)
+                        for i = 1, 3 do move(stoneColors.red, stmt.direction) end
                     end
                 end
-                for i = 1, stmt.number do move(stoneColors.red, stmt.direction) end
             end
         elseif stmt.color == "orange" then
             if frames[cf] then
                 if stmt.direction == "up" then
-                    if stmt.number == 1 then                             -- [
-                    elseif stmt.number == 2 then                         -- ==
+                    if stmt.number == 1 then                                                          -- [
+                    elseif stmt.number == 2 then                                                      -- ==
                     end
                 elseif stmt.direction == "down" then
-                    if stmt.number == 1 then                             -- ]
-                    elseif stmt.number == 2 then                         -- <
+                    if stmt.number == 1 then                                                          -- ]
+                    elseif stmt.number == 2 then                                                      -- <
                     end
                 elseif stmt.direction == "left" then
-                    if stmt.number == 1 then                             -- ,
-                    elseif stmt.number == 2 then                         -- >
+                    if stmt.number == 1 then                                                          -- ,
+                    elseif stmt.number == 2 then                                                      -- >
                     end
                 elseif stmt.direction == "right" then
-                    if stmt.number == 1 then                             -- nth
-                    elseif stmt.number == 2 then                         -- nothing yet: gotos?
+                    if stmt.number == 1 then                                                          -- nth
+                    elseif stmt.number == 2 then                                                      -- nothing yet: gotos?
                     end
                 end
-                for i = 1, stmt.number do move(stoneColors.orange, stmt.direction) end
             end
         elseif stmt.color == "yellow" then
             if frames[cf] then
                 local lhs = stack:pop()
                 local rhs = stack:pop()
                 if type(lhs) ~= "number" or type(rhs) ~= "number" then
-                    print("Cannot perform arithmetic on non-numbers")
+                    print("Cannot perform arithmetic on non-numbers at statement #" .. k)
                     os.exit(1)
                 end
-                if stmt.direction == "up" then                           -- *
+                if stmt.direction == "up" then                                                        -- *
                     stack:push(rhs * lhs)
-                elseif stmt.direction == "down" then                     -- +
+                elseif stmt.direction == "down" then                                                  -- +
                     stack:push(rhs + lhs)
-                elseif stmt.direction == "left" then                     -- -
+                elseif stmt.direction == "left" then                                                  -- -
                     stack:push(rhs - lhs)
-                elseif stmt.direction == "right" then                    -- /
+                elseif stmt.direction == "right" then                                                 -- /
                     stack:push(rhs / lhs)
                 end
                 move(stoneColors.yellow, stmt.direction)
             end
         elseif stmt.color == "green" then
             if frames[cf] then
-                if stmt.direction == "up" then                           -- roll
+                if stmt.direction == "up" then                                                        -- roll
                     local depth = stack:pop()
                     local toroll = {}
                     if depth > #stack:get() then
@@ -225,33 +236,34 @@ function eval(proc)
                     for k, v in ipairs(toroll) do
                         stack:push(v)
                     end
-                elseif stmt.direction == "down" then                     -- dup
+                elseif stmt.direction == "down" then                                                  -- dup
                     local dup = stack:pop()
                     stack:push(dup)
                     stack:push(dup)
-                elseif stmt.direction == "left" then                     -- drop
+                elseif stmt.direction == "left" then                                                  -- drop
                     stack:pop()
-                elseif stmt.direction == "right" then                    -- not
+                elseif stmt.direction == "right" then                                                 -- not
                     stack:push(not stack:pop()) -- boolean check?
                 end
                 move(stoneColors.green, stmt.direction)
             end
         elseif stmt.color == "blue" then
             if frames[cf] then
-                if stmt.direction == "up" then                           -- print
+                if stmt.direction == "up" then                                                        -- print
                     io.write(tostring(stack:pop()))
-                elseif stmt.direction == "down" then                     -- input
+                elseif stmt.direction == "down" then                                                  -- input
                     stack:push(tonumber(io.read()))
-                elseif stmt.direction == "left" then                     -- printc
+                elseif stmt.direction == "left" then                                                  -- printc
                     io.write(string.char(stack:pop()))
-                elseif stmt.direction == "right" then                    -- quine
+                    io.flush()
+                elseif stmt.direction == "right" then                                                 -- quine
                     io.write("blue right")
                     os.exit(0)
                 end
                 move(stoneColors.blue, stmt.direction)
             end
         elseif stmt.color == "purple" then
-            if stmt.direction == "up" then                               -- if
+            if stmt.direction == "up" then                                                            -- if
                 if frames[cf] then
                     if stack:pop() then
                         table.insert(frames, true)
@@ -261,11 +273,11 @@ function eval(proc)
                     cf = cf + 1
                     move(stoneColors.purple, stmt.direction)
                 end
-            elseif stmt.direction == "down" then                         -- else
+            elseif stmt.direction == "down" then                                                      -- else
                 frames[cf] = not frames[cf]
                 move(stoneColors.purple, stmt.direction)
-            elseif stmt.direction == "left" then                         -- while
-            elseif stmt.direction == "right" then                        -- end
+            elseif stmt.direction == "left" then                                                      -- while
+            elseif stmt.direction == "right" then                                                     -- end
                 table.remove(frames)
                 cf = cf - 1
                 move(stoneColors.purple, stmt.direction)
@@ -273,19 +285,38 @@ function eval(proc)
         end
 
         if args.debug then
-            print(k .. ":", stmt.color, stmt.direction, stmt.number, frames[cf], #frames)
+            if nmove > 0 then
+                print("MOVE " .. nmove .. ":", stmt.color, stmt.direction, stmt.number, frames[cf], #frames)
+            else
+                print(k .. ":", stmt.color, stmt.direction, stmt.number, frames[cf], #frames)
+            end
         end
         if args.stack then
-            print(k, "stack:")
-            for k,v in ipairs(stack:get()) do print(ml.tstring(v)) end
+            if nmove > 0 then
+                print("MOVE " .. nmove .. ":", "stack:")
+                for k,v in ipairs(stack:get()) do print(ml.tstring(v)) end
+            else
+                print(k, "stack:")
+                for k,v in ipairs(stack:get()) do print(ml.tstring(v)) end
+            end
         end
         if args.field then
-            print(k, "field:")
-            for y = 1, field.height do
-                for x = 1, field.width do
-                    io.write(field[y][x].pname)
+            if nmove > 0 then
+                print("MOVE " .. nmove .. ":", "field:")
+                for y = 1, field.height do
+                    for x = 1, field.width do
+                        io.write(field[y][x].pname)
+                    end
+                    print("")
                 end
-                print("")
+            else
+                print(k, "field:")
+                for y = 1, field.height do
+                    for x = 1, field.width do
+                        io.write(field[y][x].pname)
+                    end
+                    print("")
+                end
             end
         end
     end
@@ -304,11 +335,13 @@ function move(stone, dir) -- {{{
                     if y ~= 1 then
                         -- check if stone is blocking
                         -- TODO: check weight of stone
-                        if field[y - 1] ~= stoneColors.invis then
+                        if field[y - 1][x] ~= stoneColors.invis then
                             -- move it out of the way
                             local tm = field[y - 1][x]
                             move(tm, dir)
+                            nmove = nmove + 1
                             eval({Statement.new(tm, directions.up, numbers.one)})
+                            nmove = nmove - 1
                         end
                         field[y][x] = stoneColors.invis
                         field[y - 1][x] = stone
@@ -317,7 +350,9 @@ function move(stone, dir) -- {{{
                         if field[field.height][x] ~= stoneColors.invis then
                             local tm = field[field.height][x]
                             move(tm, dir)
+                            nmove = nmove + 1
                             eval({Statement.new(tm, directions.up, numbers.one)})
+                            nmove = nmove - 1
                         end
                         field[y][x] = stoneColors.invis
                         field[field.height][x] = stone
@@ -328,7 +363,9 @@ function move(stone, dir) -- {{{
                         if field[y + 1][x] ~= stoneColors.invis then
                             local tm = field[y + 1][x]
                             move(tm, dir)
+                            nmove = nmove + 1
                             eval({Statement.new(tm, directions.down, numbers.one)})
+                            nmove = nmove - 1
                         end
                         field[y][x] = stoneColors.invis
                         field[y + 1][x] = stone
@@ -336,7 +373,9 @@ function move(stone, dir) -- {{{
                         if field[1][x] ~= stoneColors.invis then
                             local tm = field[1][x]
                             move(tm, dir)
+                            nmove = nmove + 1
                             eval({Statement.new(tm, directions.down, numbers.one)})
+                            nmove = nmove - 1
                         end
                         field[y][x] = stoneColors.invis
                         field[1][x] = stone
@@ -347,7 +386,9 @@ function move(stone, dir) -- {{{
                         if field[y][x - 1] ~= stoneColors.invis then
                             local tm = field[y][x - 1]
                             move(tm, dir)
+                            nmove = nmove + 1
                             eval({Statement.new(tm, directions.left, numbers.one)})
+                            nmove = nmove - 1
                         end
                         field[y][x] = stoneColors.invis
                         field[y][x - 1] = stone
@@ -355,7 +396,9 @@ function move(stone, dir) -- {{{
                         if field[y][field.width] ~= stoneColors.invis then
                             local tm = field[y][field.width]
                             move(tm, dir)
+                            nmove = nmove + 1
                             eval({Statement.new(tm, directions.left, numbers.one)})
+                            nmove = nmove - 1
                         end
                         field[y][x] = stoneColors.invis
                         field[y][field.width] = stone
@@ -366,7 +409,9 @@ function move(stone, dir) -- {{{
                         if field[y][x + 1] ~= stoneColors.invis then
                             local tm = field[y][x + 1]
                             move(tm, dir)
+                            nmove = nmove + 1
                             eval({Statement.new(tm, directions.right, numbers.one)})
+                            nmove = nmove - 1
                         end
                         field[y][x] = stoneColors.invis
                         field[y][x + 1] = stone
@@ -374,7 +419,9 @@ function move(stone, dir) -- {{{
                         if field[y][1] ~= stoneColors.invis then
                             local tm = field[y][1]
                             move(tm, dir)
+                            nmove = nmove + 1
                             eval({Statement.new(tm, directions.right, numbers.one)})
+                            nmove = nmove - 1
                         end
                         field[y][x] = stoneColors.invis
                         field[y][1] = stone

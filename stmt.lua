@@ -18,7 +18,7 @@ function Statement.new(color, direction, number, id)
         if number.value == "two" then self.number = 2 end
         if number.value == "three" then self.numer = 3 end
     else
-        self.number = nil
+        self.number = 1
     end
     return self
 end
