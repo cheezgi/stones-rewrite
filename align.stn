@@ -1,0 +1,63 @@
+move Red to location
+red left 1
+populate stack with a bunch of stuff
+red left 1
+red left 1
+red right 1
+red right 1
+red up 3
+red down 3
+move Orange to location
+orange left 2
+orange left 2
+orange down 2
+move Yellow to location
+yellow up
+yellow up
+yellow left
+populate stack with a bunch of stuff
+red up 3
+red down 3
+red up 3
+red down 3
+move Green
+green left
+green left
+green left
+green left
+populate stack with a bunch of stuff
+red up 3
+red down 3
+red up 3
+red down 3
+red up 3
+red down 3
+red up 3
+red up 3
+red down 3
+red down 3
+move Blue
+blue up
+blue up
+blue up
+blue left
+blue left
+blue left
+blue left
+blue left
+blue left
+blue left
+blue up
+move Purple
+purple down
+purple down
+purple down
+purple down
+purple left
+purple left
+purple left
+purple left
+all stones are in alightment now, three 2s are on the stack
+testing movement
+purple left
+purple left
