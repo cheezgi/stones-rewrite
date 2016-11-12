@@ -81,12 +81,14 @@ function parse(tokens) -- {{{
                                 i = i + 3
                                 k = k + 1
                             else
-                                error("Did not expect number for non orange/red in statement #" .. tostring(k))
+                                print("Did not expect number for non orange/red in statement #" .. k)
+                                os.exit(1)
                             end
                         else
                             -- if not a number, make sure it didn't need one
                             if tokens[i] == stoneColors.red or tokens[i] == stoneColors.orange then
-                                error("Expected number for orange/red in statement #" .. tostring(k))
+                                print("Expected number for orange/red in statement #" .. k)
+                                os.exit(1)
                             else
                                 -- add statement
                                 table.insert(statements, Statement.new(tokens[i], tokens[i + 1], nil, k))
@@ -97,21 +99,24 @@ function parse(tokens) -- {{{
                     else
                         -- last two tokens
                         if tokens[i] == stoneColors.red or tokens[i] == stoneColors.orange then
-                            error("Expected number for orange/red in statement #" .. tostring(k))
+                            print("Expected number for orange/red in statement #" .. k)
+                            os.exit(1)
                         else
                             table.insert(statements, Statement.new(tokens[i], tokens[i + 1], nil, k))
                         end
                         i = i + 1
                     end
                 else
-                    error("Expected direction after color in statement #" .. tostring(k))
+                    print("Expected direction after color in statement #" .. k)
+                    os.exit(1)
                 end
             else
                 -- last tokens
                 i = i + 1
             end
         else
-            error("Expected color after statement #" .. tostring(k))
+            print("Expected color after statement #" .. k)
+            os.exit(1)
         end
     end
 
@@ -335,7 +340,8 @@ function eval(proc)
                     table.remove(frames)
                     cf = cf - 1
                 else
-                    print("mismatching if/else/while/end")
+                    print("Mismatching if/else/while/end")
+                    os.exit(1)
                 end
                 move(stoneColors.purple, stmt.direction)
             end
