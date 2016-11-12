@@ -302,7 +302,7 @@ function move(stone, dir) -- {{{
                             -- move it out of the way
                             local tm = field[y - 1][x]
                             move(tm, dir)
-                            eval(Statement.new(tm, directions.up, numbers.one))
+                            eval({Statement.new(tm, directions.up, numbers.one)})
                         end
                         field[y][x] = stoneColors.invis
                         field[y - 1][x] = stone
@@ -311,7 +311,7 @@ function move(stone, dir) -- {{{
                         if field[field.height][x] ~= stoneColors.invis then
                             local tm = field[field.height][x]
                             move(tm, dir)
-                            eval(Statement.new(tm, directions.up, numbers.one))
+                            eval({Statement.new(tm, directions.up, numbers.one)})
                         end
                         field[y][x] = stoneColors.invis
                         field[field.height][x] = stone
@@ -322,7 +322,7 @@ function move(stone, dir) -- {{{
                         if field[y + 1][x] ~= stoneColors.invis then
                             local tm = field[y + 1][x]
                             move(tm, dir)
-                            eval(Statement.new(tm, directions.down, numbers.one))
+                            eval({Statement.new(tm, directions.down, numbers.one)})
                         end
                         field[y][x] = stoneColors.invis
                         field[y + 1][x] = stone
@@ -330,7 +330,7 @@ function move(stone, dir) -- {{{
                         if field[1][x] ~= stoneColors.invis then
                             local tm = field[1][x]
                             move(tm, dir)
-                            eval(Statement.new(tm, directions.down, numbers.one))
+                            eval({Statement.new(tm, directions.down, numbers.one)})
                         end
                         field[y][x] = stoneColors.invis
                         field[1][x] = stone
@@ -341,7 +341,7 @@ function move(stone, dir) -- {{{
                         if field[y][x - 1] ~= stoneColors.invis then
                             local tm = field[y][x - 1]
                             move(tm, dir)
-                            eval(Statement.new(tm, directions.left, numbers.one))
+                            eval({Statement.new(tm, directions.left, numbers.one)})
                         end
                         field[y][x] = stoneColors.invis
                         field[y][x - 1] = stone
@@ -349,7 +349,7 @@ function move(stone, dir) -- {{{
                         if field[y][field.width] ~= stoneColors.invis then
                             local tm = field[y][field.width]
                             move(tm, dir)
-                            eval(Statement.new(tm, directions.left, numbers.one))
+                            eval({Statement.new(tm, directions.left, numbers.one)})
                         end
                         field[y][x] = stoneColors.invis
                         field[y][field.width] = stone
@@ -360,7 +360,7 @@ function move(stone, dir) -- {{{
                         if field[y][x + 1] ~= stoneColors.invis then
                             local tm = field[y][x + 1]
                             move(tm, dir)
-                            eval(Statement.new(tm, directions.right, numbers.one))
+                            eval({Statement.new(tm, directions.right, numbers.one)})
                         end
                         field[y][x] = stoneColors.invis
                         field[y][x + 1] = stone
@@ -368,7 +368,7 @@ function move(stone, dir) -- {{{
                         if field[y][1] ~= stoneColors.invis then
                             local tm = field[y][1]
                             move(tm, dir)
-                            eval(Statement.new(tm, directions.right, numbers.one))
+                            eval({Statement.new(tm, directions.right, numbers.one)})
                         end
                         field[y][x] = stoneColors.invis
                         field[y][1] = stone
@@ -420,8 +420,6 @@ function main()
 
     -- evaluate statements
     eval(proc)
-
-    --for k,v in ipairs(proc) do print(ml.tstring(v)) end
 end
 
 main()
