@@ -125,7 +125,7 @@ end -- }}}
 
 -- function eval(proc) {{{
 local frames = {true}
-frames.wh = {nil}
+frames.wh = {false}
 local wf = 1
 local cf = #frames
 local stack = Stack.new()
@@ -133,7 +133,6 @@ local field = require("field")
 local nmove = 0
 
 function eval(proc)
-    --for k, stmt in ipairs(proc) do
     local k = 1
     while k <= #proc do
         stmt = proc[k]
@@ -224,6 +223,13 @@ function eval(proc)
                     elseif stmt.number == 2 then                                                      -- ==
                         for i = 1, 2 do
                             if move(stoneColors.orange, stmt.direction) and i == 2 then
+                                local lhs = stack:pop()
+                                local rhs = stack:pop()
+                                if lhs == rhs then
+                                    stack:push(true)
+                                else
+                                    stack:push(false)
+                                end
                             end
                         end
                     end
@@ -234,6 +240,13 @@ function eval(proc)
                     elseif stmt.number == 2 then                                                      -- <
                         for i = 1, 2 do
                             if move(stoneColors.orange, stmt.direction) and i == 2 then
+                                local lhs = stack:pop()
+                                local rhs = stack:pop()
+                                if lhs > rhs then
+                                    stack:push(true)
+                                else
+                                    stack:push(false)
+                                end
                             end
                         end
                     end
@@ -244,6 +257,13 @@ function eval(proc)
                     elseif stmt.number == 2 then                                                      -- >
                         for i = 1, 2 do
                             if move(stoneColors.orange, stmt.direction) and i == 2 then
+                                local lhs = stack:pop()
+                                local rhs = stack:pop()
+                                if lhs < rhs then
+                                    stack:push(true)
+                                else
+                                    stack:push(false)
+                                end
                             end
                         end
                     end
@@ -348,45 +368,48 @@ function eval(proc)
                 frames[cf] = not frames[cf]
                 move(stoneColors.purple, stmt.direction)
             elseif stmt.direction == "left" then                                                      -- while
-                table.insert(frames, true)
-                --if frames[cf] then
-                --    if stack:pop() then
-                --        table.insert(frames.wh, k)
-                        cf = cf + 1
-                --        wf = wf + 1
-                --    else
-                --        table.insert(frames, false)
-                --    end
+                if frames[cf] then
+                    if stack:pop() then
+                        table.insert(frames, true)
+                        table.insert(frames.wh, k)
+                    else
+                        table.insert(frames, false)
+                        table.insert(frames.wh, false)
+                    end
+                    cf = cf + 1
+                    wf = wf + 1
                     move(stoneColors.purple, stmt.direction)
-                --end
+                else
+                    table.insert(frames, false)
+                    table.insert(frames.wh, false)
+                    cf = cf + 1
+                    wf = wf + 1
+                end
             elseif stmt.direction == "right" then                                                     -- end
                 if cf ~= 1 then
-                    table.remove(frames)
-                    cf = cf - 1
+                    if not frames.wh[wf] then
+                        table.remove(frames)
+                        cf = cf - 1
+                    end
                 else
-                    print("Mismatching if/else/end")
+                    print("Mismatching if/else/while/end")
                     os.exit(1)
                 end
-                --if wf ~= 1 then
-                --    if frames.wh[wf] then
-                --        jump = true
-                --    else
-                --        table.remove(frames.wh, k)
-                --        wf = wf - 1
-                --    end
-                --else
-                --    print("Mismatching while/end")
-                --    os.exit(1)
-                --end
+                if frames.wh[wf] then
+                    jump = true
+                elseif wf ~= 1 then
+                    table.remove(frames.wh)
+                    wf = wf - 1
+                end
                 move(stoneColors.purple, stmt.direction)
             end
         end
 
         if args.debug then
             if nmove > 0 then
-                print("MOVE " .. nmove .. ":", stmt.color, stmt.direction, stmt.number, frames[cf], #frames)
+                print("MOVE " .. nmove .. ":", stmt.color, stmt.direction, stmt.number, frames[cf], #frames, frames.wh[wf], #frames.wh)
             else
-                print(k .. ":", stmt.color, stmt.direction, stmt.number, frames[cf], #frames)
+                print(k .. ":", stmt.color, stmt.direction, stmt.number, frames[cf], #frames, frames.wh[wf], #frames.wh)
             end
         end
         if args.stack then
@@ -418,11 +441,12 @@ function eval(proc)
             end
         end
 
-        --if jump then
-        --    k = frames.wh[wf]
-        --else
+        if jump then
+            k = frames.wh[wf]
+            jump = false
+        else
             k = k + 1
-        --end
+        end
     end
 end -- }}}
 

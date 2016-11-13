@@ -6,10 +6,17 @@ purple up            if true
     red up 1
     blue up          output 0 and terminate
 purple down          otherwise
+    red up 1         move Red to another row
+    green left       drop result
     red left 3       push true
     purple left      while true
         red down 1   push one
         blue up      print one
+        red left 3   push true
+        red right 3  move Red out of the way
+        red up 1
+        green left   drop results
+        green left
     purple right     end while
 purple right         end if
 
