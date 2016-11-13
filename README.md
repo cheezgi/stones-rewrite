@@ -34,3 +34,4 @@ I really needed to plan it out before I started. From what I've learned in
 writing a game for Löve, I need to break stuff up in to more modular parts. I
 wouldn't go as crazy as those folks over at npm, though.
 
+[Esolang wiki page](https://esolangs.org/wiki/Stones)
