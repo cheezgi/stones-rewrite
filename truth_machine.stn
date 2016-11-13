@@ -1,0 +1,15 @@
+blue down            get user input
+green down           duplicate input
+red up 1             push zero
+orange up 2          check if equal
+purple up            if true
+    red up 1
+    blue up          output 0 and terminate
+purple down          otherwise
+    red left 3       push true
+    purple left      while true
+        red down 1   push one
+        blue up      print one
+    purple right     end while
+purple right         end if
+

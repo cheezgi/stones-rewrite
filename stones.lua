@@ -125,7 +125,7 @@ end -- }}}
 
 -- function eval(proc) {{{
 local frames = {true}
-local frames.wh = {false}
+frames.wh = {nil}
 local wf = 1
 local cf = #frames
 local stack = Stack.new()
@@ -133,8 +133,11 @@ local field = require("field")
 local nmove = 0
 
 function eval(proc)
-    for k, stmt in ipairs(proc) do
-        ::top::
+    --for k, stmt in ipairs(proc) do
+    local k = 1
+    while k <= #proc do
+        stmt = proc[k]
+
         if stmt.color == "red" then
             if frames[cf] then
                 if stmt.direction == "up" then
@@ -211,6 +214,7 @@ function eval(proc)
                     end
                 end
             end
+
         elseif stmt.color == "orange" then
             if frames[cf] then
                 if stmt.direction == "up" then
@@ -255,6 +259,7 @@ function eval(proc)
                     end
                 end
             end
+
         elseif stmt.color == "yellow" then
             if frames[cf] then
                 if move(stoneColors.yellow, stmt.direction) then
@@ -275,6 +280,7 @@ function eval(proc)
                     end
                 end
             end
+
         elseif stmt.color == "green" then
             if frames[cf] then
                 if move(stoneColors.green, stmt.direction) then
@@ -305,6 +311,7 @@ function eval(proc)
                     end
                 end
             end
+
         elseif stmt.color == "blue" then
             if frames[cf] then
                 if move(stoneColors.blue, stmt.direction) then
@@ -325,6 +332,7 @@ function eval(proc)
                     end
                 end
             end
+
         elseif stmt.color == "purple" then
             if stmt.direction == "up" then                                                            -- if
                 if frames[cf] then
@@ -340,12 +348,17 @@ function eval(proc)
                 frames[cf] = not frames[cf]
                 move(stoneColors.purple, stmt.direction)
             elseif stmt.direction == "left" then                                                      -- while
-                if frames[cf] then
-                    table.insert(frames.wh, true)
-                    cf = cf + 1
-                    wf = wf + 1
+                table.insert(frames, true)
+                --if frames[cf] then
+                --    if stack:pop() then
+                --        table.insert(frames.wh, k)
+                        cf = cf + 1
+                --        wf = wf + 1
+                --    else
+                --        table.insert(frames, false)
+                --    end
                     move(stoneColors.purple, stmt.direction)
-                end
+                --end
             elseif stmt.direction == "right" then                                                     -- end
                 if cf ~= 1 then
                     table.remove(frames)
@@ -354,13 +367,17 @@ function eval(proc)
                     print("Mismatching if/else/end")
                     os.exit(1)
                 end
-                if wf ~= 1 then
-                    table.remove(frames.wh)
-                    wf = wf - 1
-                else
-                    print("Mismatching while/end")
-                    os.exit(1)
-                end
+                --if wf ~= 1 then
+                --    if frames.wh[wf] then
+                --        jump = true
+                --    else
+                --        table.remove(frames.wh, k)
+                --        wf = wf - 1
+                --    end
+                --else
+                --    print("Mismatching while/end")
+                --    os.exit(1)
+                --end
                 move(stoneColors.purple, stmt.direction)
             end
         end
@@ -401,9 +418,11 @@ function eval(proc)
             end
         end
 
-        if frames.wh[wf] then
-            goto top
-        end
+        --if jump then
+        --    k = frames.wh[wf]
+        --else
+            k = k + 1
+        --end
     end
 end -- }}}
 
