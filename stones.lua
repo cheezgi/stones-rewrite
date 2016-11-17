@@ -475,7 +475,6 @@ function move(stone, dir) -- {{{
                             field[y - 1][x] = stone
                             return true
                         else
-                            print("clink")
                             return false
                         end
                     else
@@ -491,7 +490,6 @@ function move(stone, dir) -- {{{
                             field[field.height][x] = stone
                             return true
                         else
-                            print("clink")
                             return false
                         end
                     end
@@ -508,7 +506,6 @@ function move(stone, dir) -- {{{
                             field[y + 1][x] = stone
                             return true
                         else
-                            print("clink")
                             return false
                         end
                     else
@@ -523,7 +520,6 @@ function move(stone, dir) -- {{{
                             field[1][x] = stone
                             return true
                         else
-                            print("clink")
                             return false
                         end
                     end
@@ -540,7 +536,6 @@ function move(stone, dir) -- {{{
                             field[y][x - 1] = stone
                             return true
                         else
-                            print("clink")
                             return false
                         end
                     else
@@ -555,7 +550,6 @@ function move(stone, dir) -- {{{
                             field[y][field.width] = stone
                             return true
                         else
-                            print("clink")
                             return false
                         end
                     end
@@ -572,7 +566,6 @@ function move(stone, dir) -- {{{
                             field[y][x + 1] = stone
                             return true
                         else
-                            print("clink")
                             return false
                         end
                     else
@@ -587,7 +580,6 @@ function move(stone, dir) -- {{{
                             field[y][1] = stone
                             return true
                         else
-                            print("clink")
                             return false
                         end
                     end
