@@ -23,6 +23,7 @@ TODO:
     * [X] Stone movement mechanics
         * [X] Stones move each other around
         * [X] Weight of stones factors into wether or not anything happens
+    * [X] Arrays
 
 Hey, looks like I'm finished. This is currently the reference interpreter for
 the stones programming language. Eventually I'll get around to translating
