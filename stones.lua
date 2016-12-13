@@ -131,6 +131,8 @@ local cf = #frames
 local stack = Stack.new()
 local field = require("field")
 local nmove = 0
+local arraying = false
+local fakeArray = {}
 
 function eval(proc)
     local k = 1
@@ -219,6 +221,7 @@ function eval(proc)
                 if stmt.direction == "up" then
                     if stmt.number == 1 then                                                          -- [
                         if move(stoneColors.orange, stmt.direction) then
+                            arraying = true
                         end
                     elseif stmt.number == 2 then                                                      -- ==
                         for i = 1, 2 do
@@ -236,6 +239,9 @@ function eval(proc)
                 elseif stmt.direction == "down" then
                     if stmt.number == 1 then                                                          -- ]
                         if move(stoneColors.orange, stmt.direction) then
+                            table.insert(fakeArray, stack:pop())
+                            stack:push(fakeArray)
+                            arraying = false
                         end
                     elseif stmt.number == 2 then                                                      -- <
                         for i = 1, 2 do
@@ -253,6 +259,7 @@ function eval(proc)
                 elseif stmt.direction == "left" then
                     if stmt.number == 1 then                                                          -- ,
                         if move(stoneColors.orange, stmt.direction) then
+                            table.insert(fakeArray, stack:pop())
                         end
                     elseif stmt.number == 2 then                                                      -- >
                         for i = 1, 2 do
@@ -336,7 +343,7 @@ function eval(proc)
             if frames[cf] then
                 if move(stoneColors.blue, stmt.direction) then
                     if stmt.direction == "up" then                                                        -- print
-                        io.write(tostring(stack:pop()))
+                        io.write(ml.tstring(stack:pop()))
                     elseif stmt.direction == "down" then                                                  -- input
                         local input = io.read()
                         if tonumber(input) then
@@ -345,8 +352,19 @@ function eval(proc)
                             stack:push(input)
                         end
                     elseif stmt.direction == "left" then                                                  -- printc
-                        io.write(string.char(stack:pop()))
-                        io.flush()
+                        local tmp = stack:pop()
+                        if type(tmp) == "table" then
+                            for k, v in pairs(tmp) do
+                                if type(v) == "number" then
+                                    io.write(string.char(v))
+                                else
+                                    io.write(ml.tstring(v))
+                                end
+                            end
+                        else
+                            io.write(string.char(stack:pop()))
+                            io.flush()
+                        end
                     elseif stmt.direction == "right" then                                                 -- quine
                         io.write("blue right")
                     end
