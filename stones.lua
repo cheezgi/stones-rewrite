@@ -511,6 +511,7 @@ function move(stone, dir) -- {{{
                             return false
                         end
                     end
+
                 elseif dir == "down" then
                     if y ~= field.height then
                         if field[y + 1][x].weight <= stone.weight then
@@ -526,6 +527,7 @@ function move(stone, dir) -- {{{
                         else
                             return false
                         end
+
                     else
                         if field[1][x].weight <= stone.weight then
                             if field[1][x] ~= stoneColors.invis then
@@ -541,6 +543,7 @@ function move(stone, dir) -- {{{
                             return false
                         end
                     end
+
                 elseif dir == "left" then
                     if x ~= 1 then
                         if field[y][x - 1].weight <= stone.weight then
@@ -571,6 +574,7 @@ function move(stone, dir) -- {{{
                             return false
                         end
                     end
+
                 elseif dir == "right" then
                     if x ~= field.width then
                         if field[y][x + 1].weight <= stone.weight then
@@ -649,4 +653,3 @@ function main()
 end
 
 main()
-
