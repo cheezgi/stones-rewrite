@@ -277,6 +277,9 @@ function eval(proc)
                 elseif stmt.direction == "right" then
                     if stmt.number == 1 then                                                          -- nth
                         if move(stoneColors.orange, stmt.direction) then
+                            local arr = stack:pop()
+                            local ind = stack:pop()
+                            stack:push(arr[ind])
                         end
                     elseif stmt.number == 2 then                                                      -- nothing yet: gotos?
                         for i = 1, 2 do
